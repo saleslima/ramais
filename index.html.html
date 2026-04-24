@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>COPOM - Centro de Operações da Polícia Militar</title>
+  <style>
+    :root {
+      --verde: #9fd285;
+      --verde-escuro: #4f7c3b;
+      --azul: #c9def2;
+      --azul-escuro: #2d5c9c;
+      --cinza: #cfcfd2;
+      --vermelho: #ff2b08;
+      --amarelo: #ffd747;
+      --roxo: #c879e8;
+      --creme: #fff2bb;
+      --linha: #111;
+      --fundo: #fff;
+      --texto: #111;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--fundo);
+      color: var(--texto);
+    }
+
+    .page {
+      width: 100%;
+      min-height: 100vh;
+      padding: 18px 18px 40px;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 10px 55px 12px;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid #eee;
+    }
+
+    .logo-bolt {
+      position: absolute;
+      left: 14px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: #f5c344;
+      border: 3px solid #b48119;
+      color: #34465a;
+      font-size: 26px;
+      font-weight: 900;
+      transform: rotate(-8deg);
+    }
+
+    h1 {
+      margin: 0;
+      text-align: center;
+      font-size: clamp(26px, 4vw, 52px);
+      line-height: 1;
+      font-weight: 500;
+      letter-spacing: 1px;
+    }
+
+    h1 span {
+      display: inline-block;
+      font-size: clamp(14px, 2vw, 25px);
+      font-weight: 400;
+      letter-spacing: 0;
+      vertical-align: middle;
+    }
+
+    .settings-btn {
+      position: absolute;
+      right: 14px;
+      width: 42px;
+      height: 42px;
+      border: 2px solid #111;
+      border-radius: 50%;
+      background: #fff;
+      cursor: pointer;
+      font-size: 24px;
+      display: grid;
+      place-items: center;
+      transition: transform .2s ease, background .2s ease;
+    }
+
+    .settings-btn:hover {
+      transform: rotate(35deg) scale(1.05);
+      background: #f3f3f3;
+    }
+
+    .board {
+      max-width: 1620px;
+      margin: 0 auto;
+      display: grid;
+      gap: 14px;
+    }
+
+    .zone-row {
+      display: grid;
+      grid-template-columns: 58px 1fr;
+      align-items: stretch;
+      gap: 10px;
+    }
+
+    .vertical-title {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(18px, 2vw, 26px);
+      letter-spacing: .5px;
+      padding: 8px 0;
+      color: #222;
+    }
+
+    .dispatch-grid {
+      display: grid;
+      grid-template-columns: 1.05fr .9fr 1.05fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .dispatch-col {
+      display: grid;
+      gap: 14px;
+    }
+
+    .line {
+      display: grid;
+      gap: 0;
+      grid-auto-rows: 58px;
+    }
+
+    .grid-7 { grid-template-columns: repeat(7, 1fr); }
+    .grid-6 { grid-template-columns: repeat(6, 1fr); }
+    .grid-5 { grid-template-columns: repeat(5, 1fr); }
+
+    .box {
+      min-width: 0;
+      min-height: 45px;
+      border: 2px solid var(--linha);
+      background: var(--azul);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 3px 4px;
+      line-height: 1.04;
+      font-weight: 700;
+      overflow: hidden;
+    }
+
+    .box .label {
+      font-size: clamp(9px, .8vw, 15px);
+      text-transform: none;
+    }
+
+    .box .num {
+      margin-top: 2px;
+      font-size: clamp(14px, 1.35vw, 23px);
+      font-weight: 500;
+      letter-spacing: 1px;
+    }
+
+    .box.small .label,
+    .box.small .num {
+      font-size: clamp(10px, .9vw, 15px);
+      margin: 0;
+    }
+
+    .green { background: var(--verde); }
+    .green-dark { background: var(--verde-escuro); color: #fff; }
+    .blue { background: var(--azul); }
+    .blue-dark { background: var(--azul-escuro); color: #fff; }
+    .gray { background: var(--cinza); }
+    .red { background: var(--vermelho); }
+    .yellow { background: var(--amarelo); }
+    .purple { background: var(--roxo); }
+    .cream { background: var(--creme); }
+
+    .emergency-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1.05fr 1fr;
+      gap: 34px;
+      align-items: start;
+    }
+
+    .phone-group {
+      display: grid;
+      gap: 6px;
+    }
+
+    .phone-title-row {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      margin-left: 36px;
+    }
+
+    .phone-table {
+      display: grid;
+      grid-template-columns: 36px 1fr;
+      gap: 0;
+      align-items: stretch;
+    }
+
+    .side-code {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      background: var(--azul-escuro);
+      color: #fff;
+      border: 2px solid var(--linha);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .number-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+    }
+
+    .number-grid .box {
+      min-height: 25px;
+      height: 25px;
+      font-size: clamp(11px, 1vw, 17px);
+      font-weight: 700;
+      flex-direction: row;
+    }
+
+    .number-grid .red,
+    .emergency-wrap .red {
+      background: var(--vermelho);
+    }
+
+    .admin-grid {
+      display: grid;
+      grid-template-columns: repeat(15, 1fr);
+      gap: 0;
+    }
+
+    .admin-card {
+      border: 2px solid var(--linha);
+      background: var(--creme);
+      min-height: 75px;
+      display: grid;
+      grid-template-rows: 32px 1fr;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .admin-card .title {
+      background: var(--amarelo);
+      border-bottom: 2px solid var(--linha);
+      font-size: clamp(8px, .8vw, 13px);
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2px 4px;
+      line-height: 1.1;
+    }
+
+    .admin-card .body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3px;
+      white-space: pre-line;
+      font-size: clamp(10px, .9vw, 15px);
+      line-height: 1.2;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.48);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 15px;
+    }
+
+    .modal-backdrop.show {
+      display: flex;
+    }
+
+    .modal {
+      width: min(920px, 96vw);
+      max-height: 90vh;
+      overflow: auto;
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 20px 70px rgba(0,0,0,.35);
+      border: 2px solid #111;
+      padding: 18px;
+    }
+
+    .modal h2,
+    .modal h3 {
+      margin: 0 0 12px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    label {
+      display: grid;
+      gap: 5px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    input,
+    select,
+    textarea,
+    button {
+      font-family: inherit;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid #aaa;
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 14px;
+    }
+
+    textarea {
+      min-height: 72px;
+      resize: vertical;
+    }
+
+    .modal-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .btn {
+      border: 2px solid #111;
+      border-radius: 10px;
+      background: #f7f7f7;
+      padding: 10px 14px;
+      cursor: pointer;
+      font-weight: 800;
+    }
+
+    .btn.primary {
+      background: #111;
+      color: #fff;
+    }
+
+    .edit-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .edit-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 140px;
+      gap: 8px;
+      align-items: end;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+    }
+
+    .hint {
+      font-size: 13px;
+      color: #555;
+      margin: 8px 0 14px;
+    }
+
+    .hidden { display: none !important; }
+
+    @media (max-width: 1150px) {
+      .dispatch-grid,
+      .emergency-wrap {
+        grid-template-columns: 1fr;
+      }
+
+      .admin-grid {
+        grid-template-columns: repeat(5, 1fr);
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page { padding: 8px; }
+      .topbar { padding: 10px 48px; }
+      .logo-bolt { width: 34px; height: 34px; font-size: 22px; }
+      .settings-btn { width: 36px; height: 36px; font-size: 20px; }
+      .zone-row { grid-template-columns: 34px 1fr; gap: 5px; }
+      .vertical-title { font-size: 16px; }
+      .line { grid-auto-rows: 48px; }
+      .grid-7, .grid-6, .grid-5 { grid-template-columns: repeat(3, 1fr); }
+      .phone-title-row, .number-grid { grid-template-columns: repeat(3, 1fr); }
+      .phone-title-row { margin-left: 28px; }
+      .phone-table { grid-template-columns: 28px 1fr; }
+      .admin-grid { grid-template-columns: repeat(2, 1fr); }
+      .form-grid, .edit-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <div class="logo-bolt">⚡</div>
+      <h1 id="mainTitle">COPOM <span>- Centro de Operações da Polícia Militar</span></h1>
+      <button class="settings-btn" id="openSettings" title="Configurar">⚙</button>
+    </header>
+
+    <main class="board">
+      <section class="zone-row">
+        <div class="vertical-title">Despacho</div>
+        <div class="dispatch-grid" id="dispatchGrid"></div>
+      </section>
+
+      <section class="zone-row">
+        <div class="vertical-title">Atendimento de Emergência<br>190/193</div>
+        <div class="emergency-wrap" id="emergencyGrid"></div>
+      </section>
+
+      <section class="zone-row">
+        <div class="vertical-title">Administração</div>
+        <div class="admin-grid" id="adminGrid"></div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal">
+      <div id="loginArea">
+        <h2>Acesso administrativo</h2>
+        <p class="hint">Usuário: <b>admin</b> | Senha: <b>ndit</b></p>
+        <div class="form-grid">
+          <label>Usuário
+            <input type="text" id="loginUser" placeholder="Digite o usuário">
+          </label>
+          <label>Senha
+            <input type="password" id="loginPass" placeholder="Digite a senha">
+          </label>
+        </div>
+        <p class="hint" id="loginError" style="color:#b00000; display:none;">Usuário ou senha incorretos.</p>
+        <div class="modal-actions">
+          <button class="btn" id="closeLogin">Fechar</button>
+          <button class="btn primary" id="doLogin">Entrar</button>
+        </div>
+      </div>
+
+      <div id="configArea" class="hidden">
+        <h2>Configurar página</h2>
+        <p class="hint">Altere cores gerais, título e o texto/cor de qualquer campo. As alterações ficam salvas no navegador.</p>
+
+        <h3>Cores principais</h3>
+        <div class="form-grid">
+          <label>Verde <input type="color" data-var="--verde"></label>
+          <label>Verde escuro <input type="color" data-var="--verde-escuro"></label>
+          <label>Azul claro <input type="color" data-var="--azul"></label>
+          <label>Azul escuro <input type="color" data-var="--azul-escuro"></label>
+          <label>Cinza <input type="color" data-var="--cinza"></label>
+          <label>Vermelho <input type="color" data-var="--vermelho"></label>
+          <label>Amarelo <input type="color" data-var="--amarelo"></label>
+          <label>Roxo <input type="color" data-var="--roxo"></label>
+        </div>
+
+        <h3 style="margin-top:16px;">Título</h3>
+        <label>Texto do título
+          <input type="text" id="titleInput">
+        </label>
+
+        <h3 style="margin-top:16px;">Editar campos</h3>
+        <label>Escolha o campo
+          <select id="fieldSelect"></select>
+        </label>
+        <div class="form-grid" style="margin-top:8px;">
+          <label>Texto superior / título
+            <input type="text" id="fieldLabel">
+          </label>
+          <label>Número / texto inferior
+            <input type="text" id="fieldNum">
+          </label>
+          <label>Cor do campo
+            <select id="fieldColor">
+              <option value="green">Verde</option>
+              <option value="green-dark">Verde escuro</option>
+              <option value="blue">Azul claro</option>
+              <option value="blue-dark">Azul escuro</option>
+              <option value="gray">Cinza</option>
+              <option value="red">Vermelho</option>
+              <option value="yellow">Amarelo</option>
+              <option value="purple">Roxo</option>
+              <option value="cream">Creme</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="modal-actions">
+          <button class="btn" id="resetAll">Restaurar original</button>
+          <button class="btn" id="closeConfig">Fechar</button>
+          <button class="btn primary" id="saveConfig">Salvar alterações</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const defaultData = {
+      title: 'COPOM - Centro de Operações da Polícia Militar',
+      colors: {},
+      dispatch: [
+        [
+          [
+            ['Amb 3','9967','green'], ['Amb 4','1311','green'], ['49º M','3149','blue'], ['4º M','3104','blue'], ['23º M','3123','blue'], ['16º M','3116','blue'], ['SUP M5','9805','blue-dark']
+          ],
+          [
+            ['SUP AMB','9807','green-dark'], ['14º M','3114','blue'], ['20º M','3120','blue'], ['33º M','3133','blue'], ['25º M','3125','blue'], ['36º M','3136','blue'], ['SUP M8','9808','blue-dark']
+          ],
+          [
+            ['Amb 1','9962','green'], ['Amb 2','9960','green'], ['BPRV','9958','gray'], ['2º BPTran','3133','gray'], ['1º BPTran','3125','gray'], ['CPChq','9957','gray'], ['SUP ESP','9813','gray']
+          ],
+          [
+            ['Enf\nGRAU','9965','red'], ['Enf\nSAMU','9960','red'], ['Conf 2','9977','red'], ['3º GB','9974','red'], ['8º GB','9976','red'], ['5º/17º\nGB','9957','red'], ['SUP B','9815','red']
+          ],
+          [
+            ['2º GB','9973','red'], ['1º GB','9960','red'], ['Med\nGRAU','9971','red'], ['4º GB','9975','red'], ['18º GB','9978','red'], ['Conf 1','9968','red'], ['SUP A','9814','red']
+          ]
+        ],
+        [
+          [
+            ['SUP M7','9807','blue-dark'], ['15º M','3115','blue'], ['31º M','3131','blue'], ['16º M','3126','blue'], ['BAEP\nCPC','9951','gray'], ['BAEP\nCPM','9950','gray']
+          ],
+          [
+            ['SUP M3','9803','blue-dark'], ['18º M','3118','blue'], ['5º M','3105','blue'], ['9º M','3109','blue'], ['43º M','3143','blue'], ['SAC 24','3136','yellow']
+          ],
+          [
+            ['SUP M1','9801','blue-dark'], ['7º M','3107','blue'], ['11º M','3111','blue'], ['13º M','3113','blue'], ['Cabine\nVerde 1','9953','green'], ['Cabine\nVerde 2','3136','green']
+          ],
+          [
+            ['SUP M2','9802','blue-dark'], ['46º M','3146','blue'], ['3º M','3103','blue'], ['12º M','3112','blue'], ['VDM 1','9963','yellow'], ['VDM 2','9964','yellow']
+          ],
+          [
+            ['SUP M10','9810','blue-dark'], ['37º M','3137','blue'], ['1º M','3101','blue'], ['22º M','3122','blue'], ['27º M','3127','blue'], ['VDM 3','9800','yellow']
+          ]
+        ],
+        [
+          [
+            ['SUP M4','9804','blue-dark'], ['2º M','3102','blue'], ['39º M','3139','blue'], ['29º M','3129','blue'], ['48º M','3148','blue'], ['CPTM','9818','yellow'], ['SPTrans','9819','yellow']
+          ],
+          [
+            ['SUP M11','9811','blue-dark'], ['21º M','3121','blue'], ['8º M','3108','blue'], ['SUP M12','9812','blue-dark'], ['17º M','3117','blue'], ['32º M','3132','blue'], ['35º M','3135','blue']
+          ],
+          [
+            ['SUP M9','9809','blue-dark'], ['19º M','3119','blue'], ['28º M','3128','blue'], ['38º M','3138','blue'], ['GCM','9820','yellow'], ['CET','9816','yellow'], ['Metrô','9817','yellow']
+          ],
+          [
+            ['SUP M6','9806','blue-dark'], ['6º M','3106','blue'], ['24º M','3124','blue'], ['10º M','3110','blue'], ['30º M','3130','blue'], ['Lilás 1','3140','purple'], ['Lilás 2','3141','purple']
+          ]
+        ]
+      ],
+      emergency: [
+        { tops: ['3160','1208','1207','1206','1205','1204'], rows: [
+          {code:'3161', nums:['1001','1002','1003','1004','1005','1006','1020','1021','1022','1023','1024','1025']},
+          {code:'3162', nums:['1039','1040','1041','1042','1043','1044','1058','1059','1060','1061','1062','1063']},
+          {code:'3163', nums:['1077','1078','1079','1080','1081','1082','1096','1097','1098','1099','1100','1101']},
+          {code:'3164', nums:['1115','1116','1117','1118','1119','1120','1134','1135','1136','1137','1138','1139']},
+          {code:'3165', nums:['1153','1154','1155','1156','1157','1158','1172','1173','1174','1175','1176','1177']}
+        ]},
+        { tops: ['1203','1202','1201','1200','1199','1198'], rows: [
+          {code:'3166', nums:['1007','1008','1009','1010','1011','1012','1013','1026','1027','1028','1029','1030','1031','1032']},
+          {code:'3167', nums:['1045/SMS','1046','1047','1048','1049','1050','1051','1064/SMS','1065','1066','1067','1068','1069','1070']},
+          {code:'3168', nums:['1083','1084','1085','1086','1087','1088','1089','1102','1103','1104','1105','1106','1107','1108']},
+          {code:'3169', red:true, nums:['1121','1122','1123','1124','1125','1126','1127','1140','1141','1142','1143','1144','1145','1146']},
+          {code:'3170', red:true, nums:['1159','1160','1161','1162','1163','1164','1165','1178','1179','1180','1181','1182','1183','1184']}
+        ]},
+        { tops: ['1197','1196','1195','1194','1193','1192','1191'], rows: [
+          {code:'3173', nums:['1014','1015','1016','1017','1018','1019','1033','1034','1035','1036','1037','1038']},
+          {code:'3174', nums:['1052','1053','1054','1055','1056','1057','1071','1072','1073','1074','1075','1076']},
+          {code:'3175', nums:['1090','1091','1092','1093','1094','1095','1109','1110','1111','1112','1113','1114']},
+          {code:'3178', nums:['1128','1129','1130','1131','1132','1133','1147','1148','1149','1150','1151','1152']},
+          {code:'3179', nums:['1166','1167','1168','1169','1170','1171','1185','1186','1187','1188','1189','1190']}
+        ]}
+      ],
+      admin: [
+        ['Recepção','3190'], ['Protocolo','3191'], ['Estacionam.\nGuarita','3192'], ['Auditório\nSala Técnica','3199'], ['Logística','*9940\n9941/9942'], ['Projetos','*9823\n9945'], ['NAPS','57679906\n57679907'], ['Sala de Aula','57671001'], ['Chefia de\nOperações','*9999\n9996/9997'], ['Chefia de op.\nCOBOM','*9998'], ['ADM Equipes','2011\n2012'], ['SJD Equipes','1408'], ['Gab. de Com.\ne Controle','9981\n9982'], ['Olho de\nÁguia','*9903/9828\n9830/9832'], ['Setor de\nTecnologia','*9843/9842\n9840/9841'],
+        ['SECRETARIA','*9920/\n9921 / 9923'], ['SRH','*9920/\n9922'], ['CPJMD','*9926\n9924 / 9929'], ['Certidões','*9912\n9913/9914'], ['Monitoria','9833'], ['ADM COBOM','9894 / 9897\n9898'], ['P5','*9899\n9925/9893'], ['STQ','*9933/*9934\n9931/9932'], ['Ordenança','9990'], ['UGE','*9989\n9987/9988'], ['Agência\nEspecial','*9860\n9861/9862'], ['Gerenc. de\nCrises 3º','9994'], ['Chefe Div.\nOper.','*9891'], ['Chefe Div.\nAdm.','*9983'], ['Chefe\nCOBOM','*9991']
+      ]
+    };
+
+    let data = loadData();
+    const root = document.documentElement;
+
+    function loadData() {
+      const saved = localStorage.getItem('copomData');
+      return saved ? JSON.parse(saved) : structuredClone(defaultData);
+    }
+
+    function saveData() {
+      localStorage.setItem('copomData', JSON.stringify(data));
+    }
+
+    function applyColors() {
+      Object.entries(data.colors || {}).forEach(([key, value]) => root.style.setProperty(key, value));
+      document.querySelectorAll('input[type="color"][data-var]').forEach(input => {
+        const varName = input.dataset.var;
+        input.value = rgbToHex(getComputedStyle(root).getPropertyValue(varName).trim());
+      });
+    }
+
+    function rgbToHex(value) {
+      if (value.startsWith('#')) return value;
+      const match = value.match(/\d+/g);
+      if (!match) return '#000000';
+      return '#' + match.slice(0, 3).map(n => Number(n).toString(16).padStart(2, '0')).join('');
+    }
+
+    function boxHTML(label, num, color = 'blue', extra = '') {
+      return `<div class="box ${color} ${extra}" data-label="${escapeHtml(label)}" data-num="${escapeHtml(num)}"><div class="label">${escapeHtml(label).replaceAll('\n','<br>')}</div><div class="num">${escapeHtml(num).replaceAll('\n','<br>')}</div></div>`;
+    }
+
+    function escapeHtml(text) {
+      return String(text ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+    }
+
+    function renderDispatch() {
+      const grid = document.getElementById('dispatchGrid');
+      grid.innerHTML = data.dispatch.map(col => `
+        <div class="dispatch-col">
+          ${col.map(line => `<div class="line grid-${line.length}">${line.map(([label,num,color]) => boxHTML(label,num,color)).join('')}</div>`).join('')}
+        </div>
+      `).join('');
+    }
+
+    function renderEmergency() {
+      const grid = document.getElementById('emergencyGrid');
+      grid.innerHTML = data.emergency.map(group => `
+        <div class="phone-group">
+          <div class="phone-title-row" style="grid-template-columns: repeat(${group.tops.length}, 1fr)">
+            ${group.tops.map((n,i) => boxHTML('', n, i === 0 && group.tops[0] === '3160' ? 'blue-dark' : 'blue', 'small')).join('')}
+          </div>
+          ${group.rows.map(row => `
+            <div class="phone-table">
+              <div class="side-code ${row.red ? 'red' : ''}">${row.code}</div>
+              <div class="number-grid" style="grid-template-columns: repeat(${Math.ceil(row.nums.length / 2)}, 1fr)">
+                ${row.nums.map(n => boxHTML('', n, row.red ? 'red' : 'blue', 'small')).join('')}
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `).join('');
+    }
+
+    function renderAdmin() {
+      const grid = document.getElementById('adminGrid');
+      grid.innerHTML = data.admin.map(([title, body]) => `
+        <div class="admin-card">
+          <div class="title">${escapeHtml(title).replaceAll('\n','<br>')}</div>
+          <div class="body">${escapeHtml(body).replaceAll('\n','<br>')}</div>
+        </div>
+      `).join('');
+    }
+
+    function renderAll() {
+      document.getElementById('mainTitle').innerHTML = escapeHtml(data.title).replace(' - ', ' <span>- ') + (data.title.includes(' - ') ? '</span>' : '');
+      applyColors();
+      renderDispatch();
+      renderEmergency();
+      renderAdmin();
+      fillFieldSelect();
+    }
+
+    function allEditableFields() {
+      const fields = [];
+      data.dispatch.forEach((col, ci) => col.forEach((line, li) => line.forEach((item, ii) => fields.push({type:'dispatch', path:[ci,li,ii], name:`Despacho: ${item[0]} ${item[1]}`}))));
+      data.emergency.forEach((group, gi) => {
+        group.tops.forEach((n, ti) => fields.push({type:'top', path:[gi,ti], name:`Emergência topo: ${n}`}));
+        group.rows.forEach((row, ri) => {
+          fields.push({type:'code', path:[gi,ri], name:`Emergência lateral: ${row.code}`});
+          row.nums.forEach((n, ni) => fields.push({type:'num', path:[gi,ri,ni], name:`Emergência número: ${n}`}));
+        });
+      });
+      data.admin.forEach((item, ai) => fields.push({type:'admin', path:[ai], name:`Administração: ${item[0]} ${item[1]}`}));
+      return fields;
+    }
+
+    let fieldsCache = [];
+    function fillFieldSelect() {
+      const select = document.getElementById('fieldSelect');
+      const old = select.value;
+      fieldsCache = allEditableFields();
+      select.innerHTML = fieldsCache.map((f, i) => `<option value="${i}">${escapeHtml(f.name)}</option>`).join('');
+      if (old && fieldsCache[old]) select.value = old;
+      loadSelectedField();
+    }
+
+    function getFieldObj(field) {
+      const p = field.path;
+      if (field.type === 'dispatch') return data.dispatch[p[0]][p[1]][p[2]];
+      if (field.type === 'admin') return data.admin[p[0]];
+      if (field.type === 'top') return ['', data.emergency[p[0]].tops[p[1]], 'blue'];
+      if (field.type === 'code') return ['', data.emergency[p[0]].rows[p[1]].code, data.emergency[p[0]].rows[p[1]].red ? 'red' : 'blue-dark'];
+      if (field.type === 'num') return ['', data.emergency[p[0]].rows[p[1]].nums[p[2]], data.emergency[p[0]].rows[p[1]].red ? 'red' : 'blue'];
+    }
+
+    function setFieldObj(field, label, num, color) {
+      const p = field.path;
+      if (field.type === 'dispatch') data.dispatch[p[0]][p[1]][p[2]] = [label, num, color];
+      if (field.type === 'admin') data.admin[p[0]] = [label, num];
+      if (field.type === 'top') data.emergency[p[0]].tops[p[1]] = num;
+      if (field.type === 'code') data.emergency[p[0]].rows[p[1]].code = num;
+      if (field.type === 'num') data.emergency[p[0]].rows[p[1]].nums[p[2]] = num;
+      if ((field.type === 'code' || field.type === 'num') && color === 'red') data.emergency[p[0]].rows[p[1]].red = true;
+    }
+
+    function loadSelectedField() {
+      const field = fieldsCache[Number(document.getElementById('fieldSelect').value || 0)];
+      if (!field) return;
+      const [label, num, color] = getFieldObj(field);
+      document.getElementById('fieldLabel').value = label || '';
+      document.getElementById('fieldNum').value = num || '';
+      document.getElementById('fieldColor').value = color || 'blue';
+    }
+
+    const backdrop = document.getElementById('modalBackdrop');
+    document.getElementById('openSettings').onclick = () => {
+      backdrop.classList.add('show');
+      document.getElementById('loginArea').classList.remove('hidden');
+      document.getElementById('configArea').classList.add('hidden');
+      document.getElementById('loginUser').focus();
+    };
+
+    document.getElementById('closeLogin').onclick = () => backdrop.classList.remove('show');
+    document.getElementById('closeConfig').onclick = () => backdrop.classList.remove('show');
+
+    document.getElementById('doLogin').onclick = () => {
+      const user = document.getElementById('loginUser').value.trim();
+      const pass = document.getElementById('loginPass').value.trim();
+      if (user === 'admin' && pass === 'ndit') {
+        document.getElementById('loginError').style.display = 'none';
+        document.getElementById('loginArea').classList.add('hidden');
+        document.getElementById('configArea').classList.remove('hidden');
+        document.getElementById('titleInput').value = data.title;
+        applyColors();
+        fillFieldSelect();
+      } else {
+        document.getElementById('loginError').style.display = 'block';
+      }
+    };
+
+    document.getElementById('fieldSelect').onchange = loadSelectedField;
+
+    document.querySelectorAll('input[type="color"][data-var]').forEach(input => {
+      input.oninput = () => root.style.setProperty(input.dataset.var, input.value);
+    });
+
+    document.getElementById('saveConfig').onclick = () => {
+      document.querySelectorAll('input[type="color"][data-var]').forEach(input => {
+        data.colors[input.dataset.var] = input.value;
+      });
+      data.title = document.getElementById('titleInput').value || defaultData.title;
+      const field = fieldsCache[Number(document.getElementById('fieldSelect').value || 0)];
+      if (field) {
+        setFieldObj(
+          field,
+          document.getElementById('fieldLabel').value,
+          document.getElementById('fieldNum').value,
+          document.getElementById('fieldColor').value
+        );
+      }
+      saveData();
+      renderAll();
+      alert('Alterações salvas com sucesso.');
+    };
+
+    document.getElementById('resetAll').onclick = () => {
+      if (!confirm('Deseja restaurar a página original?')) return;
+      localStorage.removeItem('copomData');
+      data = structuredClone(defaultData);
+      renderAll();
+      document.getElementById('titleInput').value = data.title;
+      alert('Página restaurada.');
+    };
+
+    backdrop.addEventListener('click', (e) => {
+      if (e.target === backdrop) backdrop.classList.remove('show');
+    });
+
+    renderAll();
+  
+
+    // Edição rápida: dê duplo clique em qualquer campo para editar somente aquele texto.
+    let quickEditTarget = null;
+
+    function findQuickEditTarget(element) {
+      const dispatchBox = element.closest('.dispatch-col .box');
+      if (dispatchBox) {
+        const boxes = [...document.querySelectorAll('.dispatch-col .box')];
+        const clickedIndex = boxes.indexOf(dispatchBox);
+        let count = 0;
+        for (let ci = 0; ci < data.dispatch.length; ci++) {
+          for (let li = 0; li < data.dispatch[ci].length; li++) {
+            for (let ii = 0; ii < data.dispatch[ci][li].length; ii++) {
+              if (count === clickedIndex) {
+                return { type: 'dispatch', path: [ci, li, ii] };
+              }
+              count++;
+            }
+          }
+        }
+      }
+
+      const adminCard = element.closest('.admin-card');
+      if (adminCard) {
+        const cards = [...document.querySelectorAll('.admin-card')];
+        const index = cards.indexOf(adminCard);
+        return { type: 'admin', path: [index] };
+      }
+
+      return null;
+    }
+
+    function openQuickEdit(target) {
+      quickEditTarget = target;
+      const current = getFieldObj(target);
+
+      backdrop.classList.add('show');
+      document.getElementById('loginArea').classList.remove('hidden');
+      document.getElementById('configArea').classList.add('hidden');
+      document.getElementById('loginError').style.display = 'none';
+      document.getElementById('loginUser').value = '';
+      document.getElementById('loginPass').value = '';
+      document.getElementById('loginUser').focus();
+
+      document.getElementById('doLogin').onclick = () => {
+        const user = document.getElementById('loginUser').value.trim();
+        const pass = document.getElementById('loginPass').value.trim();
+
+        if (user !== 'admin' || pass !== 'ndit') {
+          document.getElementById('loginError').style.display = 'block';
+          return;
+        }
+
+        const novoLabel = prompt('Editar texto superior/título:', current[0] || '');
+        if (novoLabel === null) {
+          backdrop.classList.remove('show');
+          quickEditTarget = null;
+          restoreNormalLogin();
+          return;
+        }
+
+        const novoNumero = prompt('Editar número/texto inferior:', current[1] || '');
+        if (novoNumero === null) {
+          backdrop.classList.remove('show');
+          quickEditTarget = null;
+          restoreNormalLogin();
+          return;
+        }
+
+        setFieldObj(quickEditTarget, novoLabel, novoNumero, current[2] || 'blue');
+        saveData();
+        renderAll();
+        backdrop.classList.remove('show');
+        quickEditTarget = null;
+        restoreNormalLogin();
+      };
+    }
+
+    function restoreNormalLogin() {
+      document.getElementById('doLogin').onclick = normalLogin;
+    }
+
+    function normalLogin() {
+      const user = document.getElementById('loginUser').value.trim();
+      const pass = document.getElementById('loginPass').value.trim();
+      if (user === 'admin' && pass === 'ndit') {
+        document.getElementById('loginError').style.display = 'none';
+        document.getElementById('loginArea').classList.add('hidden');
+        document.getElementById('configArea').classList.remove('hidden');
+        document.getElementById('titleInput').value = data.title;
+        applyColors();
+        fillFieldSelect();
+      } else {
+        document.getElementById('loginError').style.display = 'block';
+      }
+    }
+
+    document.getElementById('doLogin').onclick = normalLogin;
+
+    document.addEventListener('dblclick', (event) => {
+      const target = findQuickEditTarget(event.target);
+      if (!target) return;
+      event.preventDefault();
+      openQuickEdit(target);
+    });
+  </script>
+</body>
+</html>
