@@ -20,9 +20,7 @@
       --texto: #111;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -35,6 +33,7 @@
       width: 100%;
       min-height: 100vh;
       padding: 18px 18px 40px;
+      background: #fff;
     }
 
     .topbar {
@@ -45,7 +44,7 @@
       align-items: center;
       justify-content: center;
       gap: 14px;
-      padding: 10px 55px 12px;
+      padding: 10px 120px 12px 60px;
       background: rgba(255, 255, 255, 0.96);
       backdrop-filter: blur(6px);
       border-bottom: 1px solid #eee;
@@ -84,9 +83,31 @@
       vertical-align: middle;
     }
 
-    .settings-btn {
+    .header-actions {
       position: absolute;
       right: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pdf-btn {
+      height: 42px;
+      border: 2px solid #111;
+      border-radius: 10px;
+      background: #fff;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 900;
+      padding: 0 12px;
+      display: grid;
+      place-items: center;
+      transition: transform .2s ease, background .2s ease;
+    }
+
+    .pdf-btn:hover { transform: scale(1.04); background: #f3f3f3; }
+
+    .settings-btn {
       width: 42px;
       height: 42px;
       border: 2px solid #111;
@@ -99,10 +120,7 @@
       transition: transform .2s ease, background .2s ease;
     }
 
-    .settings-btn:hover {
-      transform: rotate(35deg) scale(1.05);
-      background: #f3f3f3;
-    }
+    .settings-btn:hover { transform: rotate(35deg) scale(1.05); background: #f3f3f3; }
 
     .board {
       max-width: 1620px;
@@ -119,16 +137,25 @@
     }
 
     .vertical-title {
-      writing-mode: vertical-rl;
-      transform: rotate(180deg);
+      position: relative;
       text-align: center;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: clamp(18px, 2vw, 26px);
-      letter-spacing: .5px;
       padding: 8px 0;
       color: #222;
+      overflow: visible;
+      min-width: 58px;
+    }
+
+    .vertical-title span {
+      display: inline-block;
+      transform: rotate(-90deg);
+      transform-origin: center center;
+      white-space: nowrap;
+      font-size: clamp(18px, 2vw, 26px);
+      letter-spacing: .5px;
+      line-height: 1.1;
     }
 
     .dispatch-grid {
@@ -138,10 +165,7 @@
       align-items: start;
     }
 
-    .dispatch-col {
-      display: grid;
-      gap: 14px;
-    }
+    .dispatch-col { display: grid; gap: 14px; }
 
     .line {
       display: grid;
@@ -169,10 +193,7 @@
       overflow: hidden;
     }
 
-    .box .label {
-      font-size: clamp(9px, .8vw, 15px);
-      text-transform: none;
-    }
+    .box .label { font-size: clamp(9px, .8vw, 15px); }
 
     .box .num {
       margin-top: 2px;
@@ -204,10 +225,7 @@
       align-items: start;
     }
 
-    .phone-group {
-      display: grid;
-      gap: 6px;
-    }
+    .phone-group { display: grid; gap: 6px; }
 
     .phone-title-row {
       display: grid;
@@ -223,8 +241,7 @@
     }
 
     .side-code {
-      writing-mode: vertical-rl;
-      transform: rotate(180deg);
+      position: relative;
       background: var(--azul-escuro);
       color: #fff;
       border: 2px solid var(--linha);
@@ -234,12 +251,17 @@
       font-size: 17px;
       font-weight: 800;
       letter-spacing: 1px;
+      overflow: hidden;
     }
 
-    .number-grid {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
+    .side-code span {
+      display: inline-block;
+      transform: rotate(-90deg);
+      transform-origin: center center;
+      white-space: nowrap;
     }
+
+    .number-grid { display: grid; grid-template-columns: repeat(6, 1fr); }
 
     .number-grid .box {
       min-height: 25px;
@@ -250,9 +272,7 @@
     }
 
     .number-grid .red,
-    .emergency-wrap .red {
-      background: var(--vermelho);
-    }
+    .emergency-wrap .red { background: var(--vermelho); }
 
     .admin-grid {
       display: grid;
@@ -303,9 +323,7 @@
       padding: 15px;
     }
 
-    .modal-backdrop.show {
-      display: flex;
-    }
+    .modal-backdrop.show { display: flex; }
 
     .modal {
       width: min(920px, 96vw);
@@ -319,9 +337,7 @@
     }
 
     .modal h2,
-    .modal h3 {
-      margin: 0 0 12px;
-    }
+    .modal h3 { margin: 0 0 12px; }
 
     .form-grid {
       display: grid;
@@ -336,16 +352,9 @@
       font-weight: 700;
     }
 
-    input,
-    select,
-    textarea,
-    button {
-      font-family: inherit;
-    }
+    input, select, textarea, button { font-family: inherit; }
 
-    input,
-    select,
-    textarea {
+    input, select, textarea {
       width: 100%;
       border: 1px solid #aaa;
       border-radius: 8px;
@@ -353,10 +362,7 @@
       font-size: 14px;
     }
 
-    textarea {
-      min-height: 72px;
-      resize: vertical;
-    }
+    textarea { min-height: 72px; resize: vertical; }
 
     .modal-actions {
       display: flex;
@@ -375,84 +381,105 @@
       font-weight: 800;
     }
 
-    .btn.primary {
-      background: #111;
-      color: #fff;
-    }
-
-    .edit-list {
-      display: grid;
-      gap: 8px;
-      margin-top: 8px;
-    }
-
-    .edit-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr 140px;
-      gap: 8px;
-      align-items: end;
-      padding: 8px;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-    }
-
-    .hint {
-      font-size: 13px;
-      color: #555;
-      margin: 8px 0 14px;
-    }
-
+    .btn.primary { background: #111; color: #fff; }
+    .hint { font-size: 13px; color: #555; margin: 8px 0 14px; }
     .hidden { display: none !important; }
+
+    .pdf-export {
+      width: 1600px !important;
+      max-width: none !important;
+      padding: 18px 18px 40px !important;
+      overflow: visible !important;
+      background: #fff !important;
+    }
+
+    .pdf-export .topbar {
+      position: static !important;
+      border-bottom: none !important;
+      background: #fff !important;
+    }
+
+    .pdf-export .header-actions,
+    .pdf-export .modal-backdrop { display: none !important; }
+
+    .pdf-export .board {
+      max-width: 1564px !important;
+      width: 1564px !important;
+      overflow: visible !important;
+    }
+
+    .pdf-export .zone-row {
+      grid-template-columns: 58px 1fr !important;
+      gap: 10px !important;
+      overflow: visible !important;
+    }
+
+    .pdf-rotated-img {
+      width: 100% !important;
+      height: 100% !important;
+      display: block !important;
+      object-fit: contain !important;
+    }
+
+    @media print {
+      .topbar { position: static; border-bottom: none; }
+      .header-actions, .modal-backdrop { display: none !important; }
+      .page { padding: 0; }
+      body { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    }
 
     @media (max-width: 1150px) {
       .dispatch-grid,
-      .emergency-wrap {
-        grid-template-columns: 1fr;
-      }
-
-      .admin-grid {
-        grid-template-columns: repeat(5, 1fr);
-      }
+      .emergency-wrap { grid-template-columns: 1fr; }
+      .admin-grid { grid-template-columns: repeat(5, 1fr); }
     }
 
     @media (max-width: 720px) {
       .page { padding: 8px; }
-      .topbar { padding: 10px 48px; }
+      .topbar { padding: 10px 95px 10px 48px; }
       .logo-bolt { width: 34px; height: 34px; font-size: 22px; }
+      .header-actions { right: 8px; gap: 5px; }
+      .pdf-btn { height: 36px; font-size: 12px; padding: 0 8px; }
       .settings-btn { width: 36px; height: 36px; font-size: 20px; }
       .zone-row { grid-template-columns: 34px 1fr; gap: 5px; }
-      .vertical-title { font-size: 16px; }
+      .vertical-title { min-width: 34px; padding: 4px 0; }
+      .vertical-title span { font-size: 16px; }
       .line { grid-auto-rows: 48px; }
       .grid-7, .grid-6, .grid-5 { grid-template-columns: repeat(3, 1fr); }
       .phone-title-row, .number-grid { grid-template-columns: repeat(3, 1fr); }
       .phone-title-row { margin-left: 28px; }
       .phone-table { grid-template-columns: 28px 1fr; }
       .admin-grid { grid-template-columns: repeat(2, 1fr); }
-      .form-grid, .edit-row { grid-template-columns: 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
     }
   </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
   <div class="page">
     <header class="topbar">
       <div class="logo-bolt">⚡</div>
       <h1 id="mainTitle">COPOM <span>- Centro de Operações da Polícia Militar</span></h1>
-      <button class="settings-btn" id="openSettings" title="Configurar">⚙</button>
+      <div class="header-actions">
+        <button class="pdf-btn" id="generatePdf" title="Gerar PDF">PDF</button>
+        <button class="settings-btn" id="openSettings" title="Configurar">⚙</button>
+      </div>
     </header>
 
     <main class="board">
       <section class="zone-row">
-        <div class="vertical-title">Despacho</div>
+        <div class="vertical-title"><span>Despacho</span></div>
         <div class="dispatch-grid" id="dispatchGrid"></div>
       </section>
 
       <section class="zone-row">
-        <div class="vertical-title">Atendimento de Emergência<br>190/193</div>
+        <div class="vertical-title"><span>Atendimento de Emergência<br>190/193</span></div>
         <div class="emergency-wrap" id="emergencyGrid"></div>
       </section>
 
       <section class="zone-row">
-        <div class="vertical-title">Administração</div>
+        <div class="vertical-title"><span>Administração</span></div>
         <div class="admin-grid" id="adminGrid"></div>
       </section>
     </main>
@@ -527,6 +554,7 @@
 
         <div class="modal-actions">
           <button class="btn" id="resetAll">Restaurar original</button>
+          <button class="btn" id="downloadHtml">Baixar HTML atualizado</button>
           <button class="btn" id="closeConfig">Fechar</button>
           <button class="btn primary" id="saveConfig">Salvar alterações</button>
         </div>
@@ -540,52 +568,24 @@
       colors: {},
       dispatch: [
         [
-          [
-            ['Amb 3','9967','green'], ['Amb 4','1311','green'], ['49º M','3149','blue'], ['4º M','3104','blue'], ['23º M','3123','blue'], ['16º M','3116','blue'], ['SUP M5','9805','blue-dark']
-          ],
-          [
-            ['SUP AMB','9807','green-dark'], ['14º M','3114','blue'], ['20º M','3120','blue'], ['33º M','3133','blue'], ['25º M','3125','blue'], ['36º M','3136','blue'], ['SUP M8','9808','blue-dark']
-          ],
-          [
-            ['Amb 1','9962','green'], ['Amb 2','9960','green'], ['BPRV','9958','gray'], ['2º BPTran','3133','gray'], ['1º BPTran','3125','gray'], ['CPChq','9957','gray'], ['SUP ESP','9813','gray']
-          ],
-          [
-            ['Enf\nGRAU','9965','red'], ['Enf\nSAMU','9960','red'], ['Conf 2','9977','red'], ['3º GB','9974','red'], ['8º GB','9976','red'], ['5º/17º\nGB','9957','red'], ['SUP B','9815','red']
-          ],
-          [
-            ['2º GB','9973','red'], ['1º GB','9960','red'], ['Med\nGRAU','9971','red'], ['4º GB','9975','red'], ['18º GB','9978','red'], ['Conf 1','9968','red'], ['SUP A','9814','red']
-          ]
+          [['Amb 3','9967','green'], ['Amb 4','1311','green'], ['49º M','3149','blue'], ['4º M','3104','blue'], ['23º M','3123','blue'], ['16º M','3116','blue'], ['SUP M5','9805','blue-dark']],
+          [['SUP AMB','9807','green-dark'], ['14º M','3114','blue'], ['20º M','3120','blue'], ['33º M','3133','blue'], ['25º M','3125','blue'], ['36º M','3136','blue'], ['SUP M8','9808','blue-dark']],
+          [['Amb 1','9962','green'], ['Amb 2','9960','green'], ['BPRV','9958','gray'], ['2º BPTran','3133','gray'], ['1º BPTran','3125','gray'], ['CPChq','9957','gray'], ['SUP ESP','9813','gray']],
+          [['Enf\nGRAU','9965','red'], ['Enf\nSAMU','9960','red'], ['Conf 2','9977','red'], ['3º GB','9974','red'], ['8º GB','9976','red'], ['5º/17º\nGB','9957','red'], ['SUP B','9815','red']],
+          [['2º GB','9973','red'], ['1º GB','9960','red'], ['Med\nGRAU','9971','red'], ['4º GB','9975','red'], ['18º GB','9978','red'], ['Conf 1','9968','red'], ['SUP A','9814','red']]
         ],
         [
-          [
-            ['SUP M7','9807','blue-dark'], ['15º M','3115','blue'], ['31º M','3131','blue'], ['16º M','3126','blue'], ['BAEP\nCPC','9951','gray'], ['BAEP\nCPM','9950','gray']
-          ],
-          [
-            ['SUP M3','9803','blue-dark'], ['18º M','3118','blue'], ['5º M','3105','blue'], ['9º M','3109','blue'], ['43º M','3143','blue'], ['SAC 24','3136','yellow']
-          ],
-          [
-            ['SUP M1','9801','blue-dark'], ['7º M','3107','blue'], ['11º M','3111','blue'], ['13º M','3113','blue'], ['Cabine\nVerde 1','9953','green'], ['Cabine\nVerde 2','3136','green']
-          ],
-          [
-            ['SUP M2','9802','blue-dark'], ['46º M','3146','blue'], ['3º M','3103','blue'], ['12º M','3112','blue'], ['VDM 1','9963','yellow'], ['VDM 2','9964','yellow']
-          ],
-          [
-            ['SUP M10','9810','blue-dark'], ['37º M','3137','blue'], ['1º M','3101','blue'], ['22º M','3122','blue'], ['27º M','3127','blue'], ['VDM 3','9800','yellow']
-          ]
+          [['SUP M7','9807','blue-dark'], ['15º M','3115','blue'], ['31º M','3131','blue'], ['16º M','3126','blue'], ['BAEP\nCPC','9951','gray'], ['BAEP\nCPM','9950','gray']],
+          [['SUP M3','9803','blue-dark'], ['18º M','3118','blue'], ['5º M','3105','blue'], ['9º M','3109','blue'], ['43º M','3143','blue'], ['SAC 24','3136','yellow']],
+          [['SUP M1','9801','blue-dark'], ['7º M','3107','blue'], ['11º M','3111','blue'], ['13º M','3113','blue'], ['Cabine\nVerde 1','9953','green'], ['Cabine\nVerde 2','3136','green']],
+          [['SUP M2','9802','blue-dark'], ['46º M','3146','blue'], ['3º M','3103','blue'], ['12º M','3112','blue'], ['VDM 1','9963','yellow'], ['VDM 2','9964','yellow']],
+          [['SUP M10','9810','blue-dark'], ['37º M','3137','blue'], ['1º M','3101','blue'], ['22º M','3122','blue'], ['27º M','3127','blue'], ['VDM 3','9800','yellow']]
         ],
         [
-          [
-            ['SUP M4','9804','blue-dark'], ['2º M','3102','blue'], ['39º M','3139','blue'], ['29º M','3129','blue'], ['48º M','3148','blue'], ['CPTM','9818','yellow'], ['SPTrans','9819','yellow']
-          ],
-          [
-            ['SUP M11','9811','blue-dark'], ['21º M','3121','blue'], ['8º M','3108','blue'], ['SUP M12','9812','blue-dark'], ['17º M','3117','blue'], ['32º M','3132','blue'], ['35º M','3135','blue']
-          ],
-          [
-            ['SUP M9','9809','blue-dark'], ['19º M','3119','blue'], ['28º M','3128','blue'], ['38º M','3138','blue'], ['GCM','9820','yellow'], ['CET','9816','yellow'], ['Metrô','9817','yellow']
-          ],
-          [
-            ['SUP M6','9806','blue-dark'], ['6º M','3106','blue'], ['24º M','3124','blue'], ['10º M','3110','blue'], ['30º M','3130','blue'], ['Lilás 1','3140','purple'], ['Lilás 2','3141','purple']
-          ]
+          [['SUP M4','9804','blue-dark'], ['2º M','3102','blue'], ['39º M','3139','blue'], ['29º M','3129','blue'], ['48º M','3148','blue'], ['CPTM','9818','yellow'], ['SPTrans','9819','yellow']],
+          [['SUP M11','9811','blue-dark'], ['21º M','3121','blue'], ['8º M','3108','blue'], ['SUP M12','9812','blue-dark'], ['17º M','3117','blue'], ['32º M','3132','blue'], ['35º M','3135','blue']],
+          [['SUP M9','9809','blue-dark'], ['19º M','3119','blue'], ['28º M','3128','blue'], ['38º M','3138','blue'], ['GCM','9820','yellow'], ['CET','9816','yellow'], ['Metrô','9817','yellow']],
+          [['SUP M6','9806','blue-dark'], ['6º M','3106','blue'], ['24º M','3124','blue'], ['10º M','3110','blue'], ['30º M','3130','blue'], ['Lilás 1','3140','purple'], ['Lilás 2','3141','purple']]
         ]
       ],
       emergency: [
@@ -619,14 +619,57 @@
 
     let data = loadData();
     const root = document.documentElement;
+    const backdrop = document.getElementById('modalBackdrop');
+    let fieldsCache = [];
+    let quickEditTarget = null;
+
+    function deepClone(obj) {
+      return JSON.parse(JSON.stringify(obj));
+    }
 
     function loadData() {
-      const saved = localStorage.getItem('copomData');
-      return saved ? JSON.parse(saved) : structuredClone(defaultData);
+      try {
+        const saved = localStorage.getItem('copomData');
+        return saved ? JSON.parse(saved) : deepClone(defaultData);
+      } catch (error) {
+        console.warn('Dados salvos inválidos. Restaurando padrão.', error);
+        return deepClone(defaultData);
+      }
     }
 
     function saveData() {
       localStorage.setItem('copomData', JSON.stringify(data));
+    }
+
+    function getCurrentHtmlWithEmbeddedData() {
+      const htmlAtual = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+      const novoDefaultData = 'const defaultData = ' + JSON.stringify(data, null, 6) + ';\n\n    let data = loadData';
+      const regexDefaultData = new RegExp('const defaultData = [\s\S]*?;\n\n    let data = loadData');
+      return htmlAtual.replace(regexDefaultData, novoDefaultData);
+    }
+
+    function downloadUpdatedHtml() {
+      const htmlFinal = getCurrentHtmlWithEmbeddedData();
+      const blob = new Blob([htmlFinal], { type: 'text/html;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'copom-atualizado.html';
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function escapeHtml(text) {
+      return String(text ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+    }
+
+    function rgbToHex(value) {
+      if (value.startsWith('#')) return value;
+      const match = value.match(/\d+/g);
+      if (!match) return '#000000';
+      return '#' + match.slice(0, 3).map(n => Number(n).toString(16).padStart(2, '0')).join('');
     }
 
     function applyColors() {
@@ -637,19 +680,18 @@
       });
     }
 
-    function rgbToHex(value) {
-      if (value.startsWith('#')) return value;
-      const match = value.match(/\d+/g);
-      if (!match) return '#000000';
-      return '#' + match.slice(0, 3).map(n => Number(n).toString(16).padStart(2, '0')).join('');
-    }
-
     function boxHTML(label, num, color = 'blue', extra = '') {
       return `<div class="box ${color} ${extra}" data-label="${escapeHtml(label)}" data-num="${escapeHtml(num)}"><div class="label">${escapeHtml(label).replaceAll('\n','<br>')}</div><div class="num">${escapeHtml(num).replaceAll('\n','<br>')}</div></div>`;
     }
 
-    function escapeHtml(text) {
-      return String(text ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+    function renderTitle() {
+      const title = data.title || defaultData.title;
+      const safe = escapeHtml(title);
+      if (safe.includes(' - ')) {
+        document.getElementById('mainTitle').innerHTML = safe.replace(' - ', ' <span>- ') + '</span>';
+      } else {
+        document.getElementById('mainTitle').textContent = title;
+      }
     }
 
     function renderDispatch() {
@@ -670,7 +712,7 @@
           </div>
           ${group.rows.map(row => `
             <div class="phone-table">
-              <div class="side-code ${row.red ? 'red' : ''}">${row.code}</div>
+              <div class="side-code ${row.red ? 'red' : ''}"><span>${escapeHtml(row.code)}</span></div>
               <div class="number-grid" style="grid-template-columns: repeat(${Math.ceil(row.nums.length / 2)}, 1fr)">
                 ${row.nums.map(n => boxHTML('', n, row.red ? 'red' : 'blue', 'small')).join('')}
               </div>
@@ -691,7 +733,7 @@
     }
 
     function renderAll() {
-      document.getElementById('mainTitle').innerHTML = escapeHtml(data.title).replace(' - ', ' <span>- ') + (data.title.includes(' - ') ? '</span>' : '');
+      renderTitle();
       applyColors();
       renderDispatch();
       renderEmergency();
@@ -713,7 +755,6 @@
       return fields;
     }
 
-    let fieldsCache = [];
     function fillFieldSelect() {
       const select = document.getElementById('fieldSelect');
       const old = select.value;
@@ -730,6 +771,7 @@
       if (field.type === 'top') return ['', data.emergency[p[0]].tops[p[1]], 'blue'];
       if (field.type === 'code') return ['', data.emergency[p[0]].rows[p[1]].code, data.emergency[p[0]].rows[p[1]].red ? 'red' : 'blue-dark'];
       if (field.type === 'num') return ['', data.emergency[p[0]].rows[p[1]].nums[p[2]], data.emergency[p[0]].rows[p[1]].red ? 'red' : 'blue'];
+      return ['', '', 'blue'];
     }
 
     function setFieldObj(field, label, num, color) {
@@ -751,18 +793,111 @@
       document.getElementById('fieldColor').value = color || 'blue';
     }
 
-    const backdrop = document.getElementById('modalBackdrop');
-    document.getElementById('openSettings').onclick = () => {
-      backdrop.classList.add('show');
-      document.getElementById('loginArea').classList.remove('hidden');
-      document.getElementById('configArea').classList.add('hidden');
-      document.getElementById('loginUser').focus();
-    };
+    function convertRotatedTextsToImagesForPdf() {
+      const restored = [];
+      const targets = document.querySelectorAll('.vertical-title span, .side-code span');
 
-    document.getElementById('closeLogin').onclick = () => backdrop.classList.remove('show');
-    document.getElementById('closeConfig').onclick = () => backdrop.classList.remove('show');
+      targets.forEach(span => {
+        const parent = span.parentElement;
+        const rect = parent.getBoundingClientRect();
+        if (!rect.width || !rect.height) return;
 
-    document.getElementById('doLogin').onclick = () => {
+        const computed = getComputedStyle(span);
+        const parentComputed = getComputedStyle(parent);
+        const scale = 4;
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.ceil(rect.width * scale);
+        canvas.height = Math.ceil(rect.height * scale);
+
+        const ctx = canvas.getContext('2d');
+        ctx.scale(scale, scale);
+        ctx.clearRect(0, 0, rect.width, rect.height);
+        ctx.translate(rect.width / 2, rect.height / 2);
+        ctx.rotate(-Math.PI / 2);
+
+        const fontSize = parseFloat(computed.fontSize) || 18;
+        const fontWeight = computed.fontWeight || '700';
+        const fontFamily = computed.fontFamily || 'Arial';
+        const lineHeight = fontSize * 1.15;
+        const lines = span.innerText.split('\n').filter(Boolean);
+        const totalHeight = (lines.length - 1) * lineHeight;
+
+        ctx.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
+        ctx.fillStyle = computed.color || parentComputed.color || '#111';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        lines.forEach((line, index) => {
+          ctx.fillText(line, 0, (index * lineHeight) - (totalHeight / 2));
+        });
+
+        restored.push({ parent, html: parent.innerHTML });
+        const safeAlt = span.innerText.replaceAll('"', '&quot;');
+        parent.innerHTML = `<img class="pdf-rotated-img" src="${canvas.toDataURL('image/png')}" alt="${safeAlt}">`;
+      });
+
+      return () => restored.forEach(item => { item.parent.innerHTML = item.html; });
+    }
+
+    async function generatePdf() {
+      const btn = document.getElementById('generatePdf');
+      const originalText = btn.textContent;
+      const page = document.querySelector('.page');
+      const headerActions = document.querySelector('.header-actions');
+      let restoreRotatedTexts = null;
+
+      try {
+        if (!window.html2canvas || !window.jspdf) {
+          throw new Error('Bibliotecas de PDF não carregadas. Verifique a internet.');
+        }
+
+        btn.textContent = 'Gerando...';
+        btn.disabled = true;
+        page.classList.add('pdf-export');
+        headerActions.style.display = 'none';
+
+        await new Promise(resolve => setTimeout(resolve, 250));
+        restoreRotatedTexts = convertRotatedTextsToImagesForPdf();
+        await new Promise(resolve => setTimeout(resolve, 100));
+
+        const canvas = await html2canvas(page, {
+          scale: 3,
+          useCORS: true,
+          allowTaint: true,
+          backgroundColor: '#ffffff',
+          width: page.scrollWidth,
+          height: page.scrollHeight,
+          windowWidth: page.scrollWidth,
+          windowHeight: page.scrollHeight,
+          scrollX: 0,
+          scrollY: 0,
+          x: 0,
+          y: 0
+        });
+
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF({
+          orientation: canvas.width > canvas.height ? 'landscape' : 'portrait',
+          unit: 'px',
+          format: [canvas.width, canvas.height],
+          compress: true
+        });
+
+        pdf.addImage(canvas.toDataURL('image/png', 1.0), 'PNG', 0, 0, canvas.width, canvas.height);
+        pdf.save('copom.pdf');
+      } catch (error) {
+        alert('Não foi possível gerar o PDF: ' + error.message);
+        console.error(error);
+      } finally {
+        if (restoreRotatedTexts) restoreRotatedTexts();
+        page.classList.remove('pdf-export');
+        headerActions.style.display = 'flex';
+        btn.textContent = originalText;
+        btn.disabled = false;
+      }
+    }
+
+    function normalLogin() {
       const user = document.getElementById('loginUser').value.trim();
       const pass = document.getElementById('loginPass').value.trim();
       if (user === 'admin' && pass === 'ndit') {
@@ -775,51 +910,7 @@
       } else {
         document.getElementById('loginError').style.display = 'block';
       }
-    };
-
-    document.getElementById('fieldSelect').onchange = loadSelectedField;
-
-    document.querySelectorAll('input[type="color"][data-var]').forEach(input => {
-      input.oninput = () => root.style.setProperty(input.dataset.var, input.value);
-    });
-
-    document.getElementById('saveConfig').onclick = () => {
-      document.querySelectorAll('input[type="color"][data-var]').forEach(input => {
-        data.colors[input.dataset.var] = input.value;
-      });
-      data.title = document.getElementById('titleInput').value || defaultData.title;
-      const field = fieldsCache[Number(document.getElementById('fieldSelect').value || 0)];
-      if (field) {
-        setFieldObj(
-          field,
-          document.getElementById('fieldLabel').value,
-          document.getElementById('fieldNum').value,
-          document.getElementById('fieldColor').value
-        );
-      }
-      saveData();
-      renderAll();
-      alert('Alterações salvas com sucesso.');
-    };
-
-    document.getElementById('resetAll').onclick = () => {
-      if (!confirm('Deseja restaurar a página original?')) return;
-      localStorage.removeItem('copomData');
-      data = structuredClone(defaultData);
-      renderAll();
-      document.getElementById('titleInput').value = data.title;
-      alert('Página restaurada.');
-    };
-
-    backdrop.addEventListener('click', (e) => {
-      if (e.target === backdrop) backdrop.classList.remove('show');
-    });
-
-    renderAll();
-  
-
-    // Edição rápida: dê duplo clique em qualquer campo para editar somente aquele texto.
-    let quickEditTarget = null;
+    }
 
     function findQuickEditTarget(element) {
       const dispatchBox = element.closest('.dispatch-col .box');
@@ -830,9 +921,7 @@
         for (let ci = 0; ci < data.dispatch.length; ci++) {
           for (let li = 0; li < data.dispatch[ci].length; li++) {
             for (let ii = 0; ii < data.dispatch[ci][li].length; ii++) {
-              if (count === clickedIndex) {
-                return { type: 'dispatch', path: [ci, li, ii] };
-              }
+              if (count === clickedIndex) return { type: 'dispatch', path: [ci, li, ii] };
               count++;
             }
           }
@@ -842,8 +931,20 @@
       const adminCard = element.closest('.admin-card');
       if (adminCard) {
         const cards = [...document.querySelectorAll('.admin-card')];
-        const index = cards.indexOf(adminCard);
-        return { type: 'admin', path: [index] };
+        return { type: 'admin', path: [cards.indexOf(adminCard)] };
+      }
+
+      const sideCode = element.closest('.side-code');
+      if (sideCode) {
+        const codes = [...document.querySelectorAll('.side-code')];
+        const clickedIndex = codes.indexOf(sideCode);
+        let count = 0;
+        for (let gi = 0; gi < data.emergency.length; gi++) {
+          for (let ri = 0; ri < data.emergency[gi].rows.length; ri++) {
+            if (count === clickedIndex) return { type: 'code', path: [gi, ri] };
+            count++;
+          }
+        }
       }
 
       return null;
@@ -871,50 +972,86 @@
         }
 
         const novoLabel = prompt('Editar texto superior/título:', current[0] || '');
-        if (novoLabel === null) {
-          backdrop.classList.remove('show');
-          quickEditTarget = null;
-          restoreNormalLogin();
-          return;
-        }
+        if (novoLabel === null) { closeQuickEdit(); return; }
 
         const novoNumero = prompt('Editar número/texto inferior:', current[1] || '');
-        if (novoNumero === null) {
-          backdrop.classList.remove('show');
-          quickEditTarget = null;
-          restoreNormalLogin();
-          return;
-        }
+        if (novoNumero === null) { closeQuickEdit(); return; }
 
         setFieldObj(quickEditTarget, novoLabel, novoNumero, current[2] || 'blue');
         saveData();
         renderAll();
-        backdrop.classList.remove('show');
-        quickEditTarget = null;
-        restoreNormalLogin();
+        closeQuickEdit();
       };
     }
 
-    function restoreNormalLogin() {
+    function closeQuickEdit() {
+      backdrop.classList.remove('show');
+      quickEditTarget = null;
       document.getElementById('doLogin').onclick = normalLogin;
     }
 
-    function normalLogin() {
-      const user = document.getElementById('loginUser').value.trim();
-      const pass = document.getElementById('loginPass').value.trim();
-      if (user === 'admin' && pass === 'ndit') {
-        document.getElementById('loginError').style.display = 'none';
-        document.getElementById('loginArea').classList.add('hidden');
-        document.getElementById('configArea').classList.remove('hidden');
-        document.getElementById('titleInput').value = data.title;
-        applyColors();
-        fillFieldSelect();
-      } else {
-        document.getElementById('loginError').style.display = 'block';
-      }
+    function runSelfTests() {
+      console.assert('A\nB'.split('\n').length === 2, 'Teste de quebra de linha falhou');
+      console.assert(Array.isArray(defaultData.dispatch) && defaultData.dispatch.length === 3, 'Dados de despacho inválidos');
+      console.assert(typeof convertRotatedTextsToImagesForPdf === 'function', 'Função de PDF ausente');
+      console.assert(document.getElementById('generatePdf'), 'Botão PDF ausente');
+      console.assert(document.getElementById('openSettings'), 'Botão configuração ausente');
+      console.assert(document.getElementById('downloadHtml'), 'Botão baixar HTML ausente');
+      console.assert(getCurrentHtmlWithEmbeddedData().includes('const defaultData ='), 'HTML atualizado não contém defaultData');
     }
 
+    document.getElementById('generatePdf').onclick = generatePdf;
+    document.getElementById('openSettings').onclick = () => {
+      backdrop.classList.add('show');
+      document.getElementById('loginArea').classList.remove('hidden');
+      document.getElementById('configArea').classList.add('hidden');
+      document.getElementById('loginError').style.display = 'none';
+      document.getElementById('loginUser').value = '';
+      document.getElementById('loginPass').value = '';
+      document.getElementById('doLogin').onclick = normalLogin;
+      document.getElementById('loginUser').focus();
+    };
+
+    document.getElementById('closeLogin').onclick = () => backdrop.classList.remove('show');
+    document.getElementById('closeConfig').onclick = () => backdrop.classList.remove('show');
     document.getElementById('doLogin').onclick = normalLogin;
+    document.getElementById('fieldSelect').onchange = loadSelectedField;
+
+    document.querySelectorAll('input[type="color"][data-var]').forEach(input => {
+      input.oninput = () => root.style.setProperty(input.dataset.var, input.value);
+    });
+
+    document.getElementById('saveConfig').onclick = () => {
+      document.querySelectorAll('input[type="color"][data-var]').forEach(input => {
+        data.colors[input.dataset.var] = input.value;
+      });
+      data.title = document.getElementById('titleInput').value || defaultData.title;
+      const field = fieldsCache[Number(document.getElementById('fieldSelect').value || 0)];
+      if (field) {
+        setFieldObj(field, document.getElementById('fieldLabel').value, document.getElementById('fieldNum').value, document.getElementById('fieldColor').value);
+      }
+      saveData();
+      renderAll();
+      downloadUpdatedHtml();
+      alert('Alterações salvas com sucesso. Também baixei um novo arquivo HTML com a alteração gravada no próprio código. Use esse arquivo atualizado para todos acessarem a versão nova.');
+    };
+
+    document.getElementById('downloadHtml').onclick = () => {
+      downloadUpdatedHtml();
+    };
+
+    document.getElementById('resetAll').onclick = () => {
+      if (!confirm('Deseja restaurar a página original?')) return;
+      localStorage.removeItem('copomData');
+      data = deepClone(defaultData);
+      renderAll();
+      document.getElementById('titleInput').value = data.title;
+      alert('Página restaurada.');
+    };
+
+    backdrop.addEventListener('click', (event) => {
+      if (event.target === backdrop) backdrop.classList.remove('show');
+    });
 
     document.addEventListener('dblclick', (event) => {
       const target = findQuickEditTarget(event.target);
@@ -922,6 +1059,9 @@
       event.preventDefault();
       openQuickEdit(target);
     });
+
+    renderAll();
+    runSelfTests();
   </script>
 </body>
 </html>
