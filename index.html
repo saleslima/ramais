@@ -152,6 +152,15 @@
       color: #fff;
     }
 
+    #btnNovo {
+      display: none;
+      background: #111;
+      color: #fff;
+      font-size: 22px;
+      min-width: 42px;
+      padding: 8px 13px;
+    }
+
     #btnReset {
       display: none;
       background: #f3b300;
@@ -312,6 +321,7 @@
 <body>
   <div id="toolbar">
     <button id="btnSalvar" class="btn">Salvar alterações</button>
+    <button id="btnNovo" class="btn">+</button>
     <button id="btnReset" class="btn">Restaurar padrão</button>
     <button id="btnSair" class="btn">Sair admin</button>
     <button id="btnPDF" class="btn">PDF</button>
@@ -461,6 +471,7 @@ const app = document.getElementById("app");
 const btnAdmin = document.getElementById("btnAdmin");
 const btnPDF = document.getElementById("btnPDF");
 const btnSalvar = document.getElementById("btnSalvar");
+const btnNovo = document.getElementById("btnNovo");
 const btnSair = document.getElementById("btnSair");
 const btnReset = document.getElementById("btnReset");
 const painel = document.getElementById("painel");
@@ -815,6 +826,7 @@ btnAdmin.addEventListener("click", function() {
     adminAtivo = true;
     document.body.classList.add("admin-mode");
     painel.style.display = "block";
+    btnNovo.style.display = "inline-block";
     btnSair.style.display = "inline-block";
     btnReset.style.display = "inline-block";
     alert("Modo administrador ativado. Clique em uma caixa para editar.");
@@ -824,11 +836,48 @@ btnAdmin.addEventListener("click", function() {
   }
 });
 
+
+btnNovo.addEventListener("click", function() {
+  if (!adminAtivo) return;
+
+  const id = "obj_" + Date.now();
+
+  const scrollX = app.scrollLeft || 0;
+  const scrollY = app.scrollTop || 0;
+  const escala = escalaAtual();
+
+  const xVisivel = Math.round((scrollX + 420) / escala);
+  const yVisivel = Math.round((scrollY + 180) / escala);
+
+  add(
+    id,
+    "Novo objeto",
+    Math.max(20, xVisivel),
+    Math.max(20, yVisivel),
+    120,
+    55,
+    "#ffffff",
+    "#111111",
+    18,
+    "box",
+    0,
+    999,
+    2,
+    "bold",
+    "Arial"
+  );
+
+  selecionar(id);
+  marcarAlterado();
+  renderizar();
+});
+
 btnSair.addEventListener("click", function() {
   adminAtivo = false;
   selecionado = null;
   document.body.classList.remove("admin-mode");
   painel.style.display = "none";
+  btnNovo.style.display = "none";
   btnSair.style.display = "none";
   btnReset.style.display = "none";
   renderizar();
