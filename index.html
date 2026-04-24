@@ -3,289 +3,1274 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>COPOM - Centro de Operações da Polícia Militar</title>
-  <style>
-    :root{--verde:#9fd285;--verde-escuro:#4f7c3b;--azul:#c9def2;--azul-escuro:#2d5c9c;--cinza:#cfcfd2;--vermelho:#ff2b08;--amarelo:#ffd747;--roxo:#c879e8;--creme:#fff2bb;--linha:#111;--fundo:#fff;--texto:#111}*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--fundo);color:var(--texto)}.hidden{display:none!important}.floating-save{position:fixed;right:20px;bottom:20px;z-index:999;background:#111;color:#fff;border:3px solid #fff;border-radius:14px;padding:14px 18px;font-weight:900;box-shadow:0 10px 35px rgba(0,0,0,.35);cursor:pointer}.page{width:100%;min-height:100vh;padding:18px 18px 40px;background:#fff;position:relative}.topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:center;padding:10px 150px 12px 60px;background:rgba(255,255,255,.96);border-bottom:1px solid #eee}.logo-bolt{position:absolute;left:14px;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:#f5c344;border:3px solid #b48119;font-size:26px;font-weight:900;transform:rotate(-8deg)}h1{margin:0;text-align:center;font-size:clamp(26px,4vw,52px);line-height:1;font-weight:500}h1 span{font-size:clamp(14px,2vw,25px);font-weight:400}.header-actions{position:absolute;right:14px;display:flex;gap:8px}.pdf-btn,.btn-mini,.settings-btn{height:42px;border:2px solid #111;background:#fff;cursor:pointer;font-weight:900}.pdf-btn,.btn-mini{border-radius:10px;padding:0 12px}.settings-btn{width:42px;border-radius:50%;font-size:24px}.board{max-width:1620px;margin:0 auto;display:grid;gap:14px}.zone-row{display:grid;grid-template-columns:58px 1fr;gap:10px}.vertical-title{display:flex;align-items:center;justify-content:center;min-width:58px;position:relative;z-index:9000;overflow:visible;pointer-events:none}.vertical-title [data-text-key]{position:relative;z-index:9500;pointer-events:auto}.vertical-title span{display:inline-block;transform:rotate(-90deg);white-space:nowrap;font-size:clamp(18px,2vw,26px)}.emergency-title{position:relative;min-height:360px;overflow:visible;z-index:9000;pointer-events:none}.emergency-title .v-main{position:absolute;top:180px;left:-118px;display:inline-block;white-space:nowrap}.emergency-title .v-sub{position:absolute;top:275px;left:-12px;display:inline-block;white-space:nowrap}.dispatch-grid{display:grid;grid-template-columns:1.05fr .9fr 1.05fr;gap:18px}.dispatch-col{display:grid;gap:14px}.line{display:grid;gap:0;grid-auto-rows:58px}.grid-1{grid-template-columns:repeat(1,1fr)}.grid-2{grid-template-columns:repeat(2,1fr)}.grid-3{grid-template-columns:repeat(3,1fr)}.grid-4{grid-template-columns:repeat(4,1fr)}.grid-5{grid-template-columns:repeat(5,1fr)}.grid-6{grid-template-columns:repeat(6,1fr)}.grid-7{grid-template-columns:repeat(7,1fr)}.box .label,.box .num,.admin-card .title,.admin-card .body{position:relative}.move-enabled [data-text-key]{cursor:move;outline-offset:4px}.move-enabled [data-text-key].selected-move{outline:2px dashed #00a3ff!important}.text-resize-handle{display:block!important}.box{min-width:0;min-height:45px;border:2px solid var(--linha);background:var(--azul);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:3px 4px;line-height:1.04;font-weight:700;overflow:hidden;cursor:grab}.box .label{font-size:clamp(9px,.8vw,15px)}.box .num{margin-top:2px;font-size:clamp(14px,1.35vw,23px);font-weight:500}.box.small{height:25px;min-height:25px;flex-direction:row}.box.small .num{font-size:clamp(10px,.9vw,15px);margin:0}.green{background:var(--verde)}.green-dark{background:var(--verde-escuro);color:#fff}.blue{background:var(--azul)}.blue-dark{background:var(--azul-escuro);color:#fff}.gray{background:var(--cinza)}.red{background:var(--vermelho)}.yellow{background:var(--amarelo)}.purple{background:var(--roxo)}.cream{background:var(--creme)}.emergency-wrap{display:grid;grid-template-columns:1fr 1.05fr 1fr;gap:34px}.phone-group{display:grid;gap:6px}.phone-title-row{display:grid;margin-left:36px}.phone-table{display:grid;grid-template-columns:36px 1fr}.side-code{background:var(--azul-escuro);color:#fff;border:2px solid var(--linha);display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;cursor:grab}.side-code span{display:inline-block;transform:rotate(-90deg);white-space:nowrap}.number-grid{display:grid}.admin-grid{display:grid;grid-template-columns:repeat(15,1fr)}.admin-card{border:2px solid var(--linha);background:var(--creme);min-height:75px;display:grid;grid-template-rows:32px 1fr;text-align:center;overflow:hidden;cursor:grab}.admin-card .title{background:var(--amarelo);border-bottom:2px solid var(--linha);font-size:clamp(8px,.8vw,13px);font-weight:800;display:flex;align-items:center;justify-content:center;padding:2px 4px}.admin-card .body{display:flex;align-items:center;justify-content:center;padding:3px;white-space:pre-line;font-size:clamp(10px,.9vw,15px)}.move-enabled .box,.move-enabled .admin-card,.move-enabled .side-code{outline:2px dashed rgba(0,0,0,.35);outline-offset:-5px}.drag-over{outline:4px solid #111!important;outline-offset:-4px}.selected-move{outline:4px solid #00a3ff!important;outline-offset:-4px}.custom-menu{position:fixed;z-index:3000;background:#fff;border:2px solid #111;border-radius:10px;box-shadow:0 12px 35px rgba(0,0,0,.25);overflow:hidden}.custom-menu button{display:block;width:160px;padding:12px;border:0;border-bottom:1px solid #ddd;background:#fff;text-align:left;cursor:pointer;font-weight:800}.custom-menu button:hover{background:#eee}.resize-handle{position:absolute;width:13px;height:13px;background:#111;border:2px solid #fff;border-radius:50%;z-index:9999}.resize-handle.tl{left:-6px;top:-6px;cursor:nwse-resize}.resize-handle.tr{right:-6px;top:-6px;cursor:nesw-resize}.resize-handle.bl{left:-6px;bottom:-6px;cursor:nesw-resize}.resize-handle.br{right:-6px;bottom:-6px;cursor:nwse-resize}.move-enabled [data-key]{touch-action:none}.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.48);display:none;align-items:center;justify-content:center;z-index:1000;padding:15px}.modal-backdrop.show{display:flex}.modal{width:min(1100px,96vw);max-height:90vh;overflow:auto;background:#fff;border-radius:14px;box-shadow:0 20px 70px rgba(0,0,0,.35);border:2px solid #111;padding:18px}.form-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}label{display:grid;gap:5px;font-size:13px;font-weight:700}input,select,button{font-family:inherit}input,select{width:100%;border:1px solid #aaa;border-radius:8px;padding:10px;font-size:14px}.modal-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:10px;margin-top:15px}.btn{border:2px solid #111;border-radius:10px;background:#f7f7f7;padding:10px 14px;cursor:pointer;font-weight:800}.btn.primary{background:#111;color:#fff}.hint{font-size:13px;color:#555;margin:8px 0 14px}.pdf-export{width:1600px!important;max-width:none!important}.pdf-export .header-actions,.pdf-export .modal-backdrop{display:none!important}.pdf-export .topbar{position:static!important}.pdf-rotated-img{width:100%!important;height:100%!important;display:block!important;object-fit:contain!important}@media(max-width:1150px){.dispatch-grid,.emergency-wrap{grid-template-columns:1fr}.admin-grid{grid-template-columns:repeat(5,1fr)}}@media(max-width:720px){.topbar{padding:10px 110px 10px 48px}.zone-row{grid-template-columns:34px 1fr}.admin-grid{grid-template-columns:repeat(2,1fr)}.form-grid{grid-template-columns:1fr}.grid-7,.grid-6,.grid-5{grid-template-columns:repeat(3,1fr)}}
-  </style>
+  <title>COPOM - Ramais Editável</title>
+
+  <!-- Firebase compatível com HTML simples -->
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
+  <!-- Bibliotecas para gerar PDF pelo navegador -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100%;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #e9e9e9;
+      overflow: hidden;
+    }
+
+    body.admin-mode {
+      background: #dcdcdc;
+    }
+
+    #app {
+      width: 100vw;
+      height: 100vh;
+      overflow: auto;
+      position: relative;
+      background: #e9e9e9;
+    }
+
+    #board {
+      position: relative;
+      width: 1600px;
+      height: 1030px;
+      background: #ffffff;
+      transform-origin: top left;
+      margin: 0 auto;
+      box-shadow: 0 0 18px rgba(0, 0, 0, 0.25);
+    }
+
+    .box {
+      position: absolute;
+      border: 2px solid #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      white-space: pre-line;
+      overflow: hidden;
+      user-select: none;
+      line-height: 1.05;
+      font-weight: bold;
+      color: #111;
+      background: #cfe2f3;
+    }
+
+    .box.texto-livre {
+      border: none;
+      background: transparent;
+      overflow: visible;
+      font-weight: normal;
+    }
+
+    .box.selecionado {
+      outline: 4px dashed red;
+      z-index: 9998 !important;
+    }
+
+    body.admin-mode .box {
+      cursor: move;
+    }
+
+    body.admin-mode .box:hover {
+      outline: 3px dashed #ff0000;
+      z-index: 9000 !important;
+    }
+
+    .resize-dot {
+      display: none;
+      width: 16px;
+      height: 16px;
+      background: #ff0000;
+      border: 2px solid #fff;
+      border-radius: 50%;
+      position: absolute;
+      right: -9px;
+      bottom: -9px;
+      cursor: nwse-resize;
+      z-index: 9999;
+    }
+
+    body.admin-mode .box.selecionado .resize-dot {
+      display: block;
+    }
+
+    #toolbar {
+      position: fixed;
+      right: 12px;
+      top: 12px;
+      z-index: 20000;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 8px;
+      padding: 10px 13px;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+    }
+
+    #btnAdmin {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #222;
+      color: #fff;
+      font-size: 21px;
+      padding: 0;
+    }
+
+    #btnPDF {
+      background: #0b5cab;
+      color: #fff;
+    }
+
+    #btnSalvar {
+      display: none;
+      background: #098421;
+      color: #fff;
+    }
+
+    #btnSair {
+      display: none;
+      background: #a30000;
+      color: #fff;
+    }
+
+    #btnReset {
+      display: none;
+      background: #f3b300;
+      color: #111;
+    }
+
+    #painel {
+      display: none;
+      position: fixed;
+      left: 12px;
+      top: 12px;
+      width: 330px;
+      max-height: calc(100vh - 24px);
+      overflow-y: auto;
+      z-index: 20000;
+      background: #fff;
+      border: 2px solid #111;
+      border-radius: 12px;
+      padding: 14px;
+      box-shadow: 0 4px 25px rgba(0, 0, 0, 0.35);
+    }
+
+    #painel h2 {
+      margin: 0 0 10px;
+      font-size: 19px;
+      cursor: move;
+      background: #222;
+      color: #fff;
+      padding: 10px;
+      border-radius: 8px;
+      user-select: none;
+    }
+
+    #painel h2::after {
+      content: "  ↕ arraste";
+      font-size: 12px;
+      font-weight: normal;
+      opacity: .85;
+    }
+
+    .campo {
+      margin-bottom: 10px;
+    }
+
+    .campo label {
+      display: block;
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+
+    .campo input,
+    .campo select,
+    .campo textarea {
+      width: 100%;
+      border: 1px solid #aaa;
+      border-radius: 6px;
+      padding: 8px;
+      font-size: 14px;
+    }
+
+    .campo textarea {
+      min-height: 72px;
+      resize: vertical;
+    }
+
+    .grade2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .aviso {
+      font-size: 12px;
+      color: #555;
+      margin-top: 8px;
+      line-height: 1.35;
+    }
+
+    #mobileAviso {
+      display: none;
+      position: fixed;
+      left: 8px;
+      right: 8px;
+      bottom: 8px;
+      background: rgba(0, 0, 0, 0.82);
+      color: #fff;
+      padding: 9px;
+      border-radius: 8px;
+      text-align: center;
+      z-index: 18000;
+      font-size: 13px;
+    }
+
+    @media (max-width: 768px) {
+      html,
+      body {
+        overflow: auto;
+      }
+
+      #app {
+        overflow: auto;
+      }
+
+      #board {
+        margin: 0;
+      }
+
+      #toolbar {
+        top: 8px;
+        right: 8px;
+        gap: 5px;
+      }
+
+      .btn {
+        padding: 9px 10px;
+        font-size: 12px;
+      }
+
+      #btnAdmin {
+        width: 43px;
+        height: 43px;
+        font-size: 18px;
+      }
+
+      #painel {
+        left: 8px;
+        right: 8px;
+        top: 60px;
+        width: auto;
+        max-height: 62vh;
+      }
+
+      #mobileAviso {
+        display: block;
+      }
+    }
+
+    @media print {
+      #toolbar,
+      #painel,
+      #mobileAviso {
+        display: none !important;
+      }
+
+      #app {
+        overflow: visible;
+      }
+
+      #board {
+        transform: none !important;
+        box-shadow: none;
+      }
+    }
+  </style>
 </head>
+
 <body>
-  <button class="floating-save hidden" id="floatingSave">Salvar nova configuração</button>
-  <div class="page">
-    <header class="topbar"><div class="logo-bolt">⚡</div><h1 id="mainTitle">COPOM <span>- Centro de Operações da Polícia Militar</span></h1><div class="header-actions"><button class="pdf-btn" id="generatePdf">PDF</button><button class="btn-mini" id="openMoveMode">Mover</button><button class="settings-btn" id="openSettings">⚙</button></div></header>
-    <main class="board"><section class="zone-row"><div class="vertical-title"><span data-text-key="titulo-despacho" data-text-part="label" style="position:relative;cursor:move;">Despacho</span></div><div class="dispatch-grid" id="dispatchGrid"></div></section><section class="zone-row"><div class="vertical-title emergency-title"><span class="v-main" data-text-key="titulo-atendimento" data-text-part="label" style="position:relative;cursor:move;">Atendimento de Emergência</span><span class="v-sub" data-text-key="titulo-atendimento-ramal" data-text-part="label" style="position:relative;cursor:move;">190/193</span></div><div class="emergency-wrap" id="emergencyGrid"></div></section><section class="zone-row"><div class="vertical-title"><span data-text-key="titulo-administracao" data-text-part="label" style="position:relative;cursor:move;">Administração</span></div><div class="admin-grid" id="adminGrid"></div></section></main>
+  <div id="toolbar">
+    <button id="btnSalvar" class="btn">Salvar alterações</button>
+    <button id="btnReset" class="btn">Restaurar padrão</button>
+    <button id="btnSair" class="btn">Sair admin</button>
+    <button id="btnPDF" class="btn">PDF</button>
+    <button id="btnAdmin" title="Modo administrador">⚙️</button>
   </div>
 
-  <div class="modal-backdrop" id="modalBackdrop"><div class="modal"><div id="loginArea"><h2>Acesso administrativo</h2><p class="hint">Usuário: <b>admin</b> | Senha: <b>ndit</b></p><div class="form-grid"><label>Usuário<input type="text" id="loginUser"></label><label>Senha<input type="password" id="loginPass"></label></div><p class="hint" id="loginError" style="color:#b00000;display:none">Usuário ou senha incorretos.</p><div class="modal-actions"><button class="btn" id="closeLogin">Fechar</button><button class="btn primary" id="doLogin">Entrar</button></div></div><div id="configArea" class="hidden"><h2>Configurar página</h2><p class="hint">As alterações ficam na tela até clicar em <b>Salvar nova configuração</b>.</p><h3>Cores principais</h3><div class="form-grid"><label>Verde<input type="color" data-var="--verde"></label><label>Verde escuro<input type="color" data-var="--verde-escuro"></label><label>Azul claro<input type="color" data-var="--azul"></label><label>Azul escuro<input type="color" data-var="--azul-escuro"></label><label>Cinza<input type="color" data-var="--cinza"></label><label>Vermelho<input type="color" data-var="--vermelho"></label><label>Amarelo<input type="color" data-var="--amarelo"></label><label>Roxo<input type="color" data-var="--roxo"></label><label>Cor da fonte geral<input type="color" data-var="--texto"></label></div><h3>Título</h3><label>Texto do título<input type="text" id="titleInput"></label><h3>Editar campo selecionado</h3><label>Escolha o campo<select id="fieldSelect"></select></label><div class="form-grid" style="margin-top:8px"><label>Texto superior / título<input type="text" id="fieldLabel"></label><label>Número / texto inferior<input type="text" id="fieldNum"></label><label>Cor do campo<select id="fieldColor"><option value="green">Verde</option><option value="green-dark">Verde escuro</option><option value="blue">Azul claro</option><option value="blue-dark">Azul escuro</option><option value="gray">Cinza</option><option value="red">Vermelho</option><option value="yellow">Amarelo</option><option value="purple">Roxo</option><option value="cream">Creme</option></select></label><label>Cor da fonte<input type="color" id="fieldTextColor" value="#111111"></label><label>Tamanho da fonte<input type="number" id="fieldFontSize" min="8" max="60"></label><label>Tipo da fonte<select id="fieldFontFamily"><option value="">Padrão</option><option value="Arial">Arial</option><option value="Verdana">Verdana</option><option value="Tahoma">Tahoma</option><option value="Georgia">Georgia</option><option value="Times New Roman">Times New Roman</option><option value="Courier New">Courier New</option></select></label><label>Alinhamento<select id="fieldAlign"><option value="center">Centro</option><option value="left">Esquerda</option><option value="right">Direita</option></select></label><label>Negrito<select id="fieldBold"><option value="false">Não</option><option value="true">Sim</option></select></label><label>Itálico<select id="fieldItalic"><option value="false">Não</option><option value="true">Sim</option></select></label><label>Sublinhado<select id="fieldUnderline"><option value="false">Não</option><option value="true">Sim</option></select></label></div><h3>Adicionar novo ramal</h3><div class="form-grid"><label>Área<select id="addArea"><option value="admin">Administração</option><option value="emergency">Emergência</option><option value="dispatch">Despacho</option></select></label><label>Título / nome<input type="text" id="addLabel" placeholder="Ex: Novo setor"></label><label>Ramal<input type="text" id="addNumber" placeholder="Ex: 1234"></label><label>Grupo emergência<select id="addGroup"><option value="0">Grupo 1</option><option value="1">Grupo 2</option><option value="2">Grupo 3</option></select></label><label>Linha emergência<select id="addRow"><option value="0">Linha 1</option><option value="1">Linha 2</option><option value="2">Linha 3</option><option value="3">Linha 4</option><option value="4">Linha 5</option></select></label><label>Cor<select id="addColor"><option value="blue">Azul</option><option value="green">Verde</option><option value="red">Vermelho</option><option value="yellow">Amarelo</option><option value="gray">Cinza</option><option value="purple">Roxo</option><option value="cream">Creme</option></select></label></div><div class="modal-actions"><button class="btn" id="addBoxBtn">Adicionar ramal</button><button class="btn" id="resetAll">Restaurar original</button><button class="btn" id="downloadHtml">Baixar HTML atualizado</button><button class="btn" id="closeConfig">Fechar</button><button class="btn primary" id="saveConfig">Aplicar alterações</button></div></div></div></div>
+  <div id="painel">
+    <h2>Editar objeto</h2>
 
-  <script>
-    const NL = String.fromCharCode(10);
-    const firebaseConfig = {apiKey:'AIzaSyCm7rf4Iep82wkEsxZYYCHvS2oD4dvm5aI',authDomain:'ramal-70e25.firebaseapp.com',databaseURL:'https://ramal-70e25-default-rtdb.firebaseio.com',projectId:'ramal-70e25',storageBucket:'ramal-70e25.firebasestorage.app',messagingSenderId:'277968674616',appId:'1:277968674616:web:4b7a4b4d2240434dedebcd'};
-    const defaultData = {
-      title:'COPOM - Centro de Operações da Polícia Militar',
-      colors:{},
-      fieldStyles:{},
-      dispatch:[
-        [[['Amb 3','9967','green'],['Amb 4','1311','green'],['49º M','3149','blue'],['4º M','3104','blue'],['23º M','3123','blue'],['16º M','3116','blue'],['SUP M5','9805','blue-dark']],[['SUP AMB','9807','green-dark'],['14º M','3114','blue'],['20º M','3120','blue'],['33º M','3133','blue'],['25º M','3125','blue'],['36º M','3136','blue'],['SUP M8','9808','blue-dark']],[['Amb 1','9962','green'],['Amb 2','9960','green'],['BPRV','9958','gray'],['2º BPTran','3133','gray'],['1º BPTran','3125','gray'],['CPChq','9957','gray'],['SUP ESP','9813','gray']],[['Enf'+NL+'GRAU','9965','red'],['Enf'+NL+'SAMU','9960','red'],['Conf 2','9977','red'],['3º GB','9974','red'],['8º GB','9976','red'],['5º/17º'+NL+'GB','9957','red'],['SUP B','9815','red']],[['2º GB','9973','red'],['1º GB','9960','red'],['Med'+NL+'GRAU','9971','red'],['4º GB','9975','red'],['18º GB','9978','red'],['Conf 1','9968','red'],['SUP A','9814','red']]],
-        [[['SUP M7','9807','blue-dark'],['15º M','3115','blue'],['31º M','3131','blue'],['16º M','3126','blue'],['BAEP'+NL+'CPC','9951','gray'],['BAEP'+NL+'CPM','9950','gray']],[['SUP M3','9803','blue-dark'],['18º M','3118','blue'],['5º M','3105','blue'],['9º M','3109','blue'],['43º M','3143','blue'],['SAC 24','3136','yellow']],[['SUP M1','9801','blue-dark'],['7º M','3107','blue'],['11º M','3111','blue'],['13º M','3113','blue'],['Cabine'+NL+'Verde 1','9953','green'],['Cabine'+NL+'Verde 2','3136','green']],[['SUP M2','9802','blue-dark'],['46º M','3146','blue'],['3º M','3103','blue'],['12º M','3112','blue'],['VDM 1','9963','yellow'],['VDM 2','9964','yellow']],[['SUP M10','9810','blue-dark'],['37º M','3137','blue'],['1º M','3101','blue'],['22º M','3122','blue'],['27º M','3127','blue'],['VDM 3','9800','yellow']]],
-        [[['SUP M4','9804','blue-dark'],['2º M','3102','blue'],['39º M','3139','blue'],['29º M','3129','blue'],['48º M','3148','blue'],['CPTM','9818','yellow'],['SPTrans','9819','yellow']],[['SUP M11','9811','blue-dark'],['21º M','3121','blue'],['8º M','3108','blue'],['SUP M12','9812','blue-dark'],['17º M','3117','blue'],['32º M','3132','blue'],['35º M','3135','blue']],[['SUP M9','9809','blue-dark'],['19º M','3119','blue'],['28º M','3128','blue'],['38º M','3138','blue'],['GCM','9820','yellow'],['CET','9816','yellow'],['Metrô','9817','yellow']],[['SUP M6','9806','blue-dark'],['6º M','3106','blue'],['24º M','3124','blue'],['10º M','3110','blue'],['30º M','3130','blue'],['Lilás 1','3140','purple'],['Lilás 2','3141','purple']]]
-      ],
-      emergency:[
-        {tops:['3160','1208','1207','1206','1205','1204'],rows:[{code:'3161',nums:['1001','1002','1003','1004','1005','1006','1020','1021','1022','1023','1024','1025']},{code:'3162',nums:['1039','1040','1041','1042','1043','1044','1058','1059','1060','1061','1062','1063']},{code:'3163',nums:['1077','1078','1079','1080','1081','1082','1096','1097','1098','1099','1100','1101']},{code:'3164',nums:['1115','1116','1117','1118','1119','1120','1134','1135','1136','1137','1138','1139']},{code:'3165',nums:['1153','1154','1155','1156','1157','1158','1172','1173','1174','1175','1176','1177']}]},
-        {tops:['1203','1202','1201','1200','1199','1198'],rows:[{code:'3166',nums:['1007','1008','1009','1010','1011','1012','1013','1026','1027','1028','1029','1030','1031','1032']},{code:'3167',nums:['1045/SMS','1046','1047','1048','1049','1050','1051','1064/SMS','1065','1066','1067','1068','1069','1070']},{code:'3168',nums:['1083','1084','1085','1086','1087','1088','1089','1102','1103','1104','1105','1106','1107','1108']},{code:'3169',red:true,nums:['1121','1122','1123','1124','1125','1126','1127','1140','1141','1142','1143','1144','1145','1146']},{code:'3170',red:true,nums:['1159','1160','1161','1162','1163','1164','1165','1178','1179','1180','1181','1182','1183','1184']}]},
-        {tops:['1197','1196','1195','1194','1193','1192','1191'],rows:[{code:'3173',nums:['1014','1015','1016','1017','1018','1019','1033','1034','1035','1036','1037','1038']},{code:'3174',nums:['1052','1053','1054','1055','1056','1057','1071','1072','1073','1074','1075','1076']},{code:'3175',nums:['1090','1091','1092','1093','1094','1095','1109','1110','1111','1112','1113','1114']},{code:'3178',nums:['1128','1129','1130','1131','1132','1133','1147','1148','1149','1150','1151','1152']},{code:'3179',nums:['1166','1167','1168','1169','1170','1171','1185','1186','1187','1188','1189','1190']}]}
-      ],
-      admin:[['Recepção','3190'],['Protocolo','3191'],['Estacionam.'+NL+'Guarita','3192'],['Auditório'+NL+'Sala Técnica','3199'],['Logística','*9940'+NL+'9941/9942'],['Projetos','*9823'+NL+'9945'],['NAPS','57679906'+NL+'57679907'],['Sala de Aula','57671001'],['Chefia de'+NL+'Operações','*9999'+NL+'9996/9997'],['Chefia de op.'+NL+'COBOM','*9998'],['ADM Equipes','2011'+NL+'2012'],['SJD Equipes','1408'],['Gab. de Com.'+NL+'e Controle','9981'+NL+'9982'],['Olho de'+NL+'Águia','*9903/9828'+NL+'9830/9832'],['Setor de'+NL+'Tecnologia','*9843/9842'+NL+'9840/9841'],['SECRETARIA','*9920/'+NL+'9921 / 9923'],['SRH','*9920/'+NL+'9922'],['CPJMD','*9926'+NL+'9924 / 9929'],['Certidões','*9912'+NL+'9913/9914'],['Monitoria','9833'],['ADM COBOM','9894 / 9897'+NL+'9898'],['P5','*9899'+NL+'9925/9893'],['STQ','*9933/*9934'+NL+'9931/9932'],['Ordenança','9990'],['UGE','*9989'+NL+'9987/9988'],['Agência'+NL+'Especial','*9860'+NL+'9861/9862'],['Gerenc. de'+NL+'Crises 3º','9994'],['Chefe Div.'+NL+'Oper.','*9891'],['Chefe Div.'+NL+'Adm.','*9983'],['Chefe'+NL+'COBOM','*9991']]
-    };
+    <div class="campo">
+      <label>Texto</label>
+      <textarea id="edTexto"></textarea>
+    </div>
 
-    let firebaseDb=null,copomRef=null,data=deepClone(defaultData),firebaseLoaded=false,fieldsCache=[],quickEditTarget=null,dragKey=null,selectedKey=null,moveModeEnabled=false,pendingChanges=false,dragOffsetX=0,dragOffsetY=0,draggingFree=false,dragStartW=0,dragStartH=0;
-    const root=document.documentElement,backdrop=document.getElementById('modalBackdrop');
-    function deepClone(o){return JSON.parse(JSON.stringify(o));}
-    function normalizeData(v){const b=deepClone(defaultData),i=v&&typeof v==='object'?v:{};return {...b,...i,colors:i.colors&&typeof i.colors==='object'?i.colors:{},fieldStyles:i.fieldStyles&&typeof i.fieldStyles==='object'?i.fieldStyles:{},textPositions:i.textPositions&&typeof i.textPositions==='object'?i.textPositions:{},dispatch:Array.isArray(i.dispatch)?i.dispatch:b.dispatch,emergency:Array.isArray(i.emergency)?i.emergency:b.emergency,admin:Array.isArray(i.admin)?i.admin:b.admin};}
-    function initializeFirebaseSafe(){try{if(!window.firebase)throw new Error('Biblioteca Firebase não carregou.');if(!firebase.apps.length)firebase.initializeApp(firebaseConfig);firebaseDb=firebase.database();copomRef=firebaseDb.ref('copom/paginaAtual');}catch(e){console.error(e);alert('Firebase não iniciou: '+e.message);}}
-    function loadLocalData(){try{const s=localStorage.getItem('copomData');return s?normalizeData(JSON.parse(s)):deepClone(defaultData);}catch(e){return deepClone(defaultData);}}
-    function prepareDataToSave(){
-      const prepared=normalizeData(deepClone(data));
-      prepared.colors=prepared.colors&&typeof prepared.colors==='object'?prepared.colors:{};
-      prepared.fieldStyles=prepared.fieldStyles&&typeof prepared.fieldStyles==='object'?prepared.fieldStyles:{};
-      prepared.textPositions=prepared.textPositions&&typeof prepared.textPositions==='object'?prepared.textPositions:{};
-      return prepared;
+    <div class="grade2">
+      <div class="campo">
+        <label>Cor fundo</label>
+        <input id="edBg" type="color">
+      </div>
+
+      <div class="campo">
+        <label>Cor texto</label>
+        <input id="edColor" type="color">
+      </div>
+    </div>
+
+    <div class="grade2">
+      <div class="campo">
+        <label>Tamanho fonte</label>
+        <input id="edFontSize" type="number" min="6" max="90">
+      </div>
+
+      <div class="campo">
+        <label>Peso fonte</label>
+        <select id="edWeight">
+          <option value="normal">Normal</option>
+          <option value="bold">Negrito</option>
+          <option value="900">Extra forte</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="campo">
+      <label>Fonte</label>
+      <select id="edFont">
+        <option value="Arial">Arial</option>
+        <option value="Verdana">Verdana</option>
+        <option value="Tahoma">Tahoma</option>
+        <option value="Georgia">Georgia</option>
+        <option value="'Times New Roman'">Times New Roman</option>
+        <option value="'Courier New'">Courier New</option>
+      </select>
+    </div>
+
+    <div class="grade2">
+      <div class="campo">
+        <label>Posição X</label>
+        <input id="edX" type="number">
+      </div>
+
+      <div class="campo">
+        <label>Posição Y</label>
+        <input id="edY" type="number">
+      </div>
+    </div>
+
+    <div class="grade2">
+      <div class="campo">
+        <label>Largura</label>
+        <input id="edW" type="number">
+      </div>
+
+      <div class="campo">
+        <label>Altura</label>
+        <input id="edH" type="number">
+      </div>
+    </div>
+
+    <div class="grade2">
+      <div class="campo">
+        <label>Rotação</label>
+        <input id="edRot" type="number">
+      </div>
+
+      <div class="campo">
+        <label>Borda</label>
+        <input id="edBorder" type="number" min="0" max="10">
+      </div>
+    </div>
+
+    <div class="grade2">
+      <div class="campo">
+        <label>Z-index</label>
+        <input id="edZ" type="number">
+      </div>
+
+      <div class="campo">
+        <label>Tipo</label>
+        <select id="edTipo">
+          <option value="box">Caixa</option>
+          <option value="texto-livre">Texto livre</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="aviso">
+      Clique e arraste qualquer caixa para mover. Também é possível mover com as setas do teclado.
+      Use Shift + seta para mover mais rápido. Use o ponto vermelho no canto para aumentar ou diminuir.
+      Depois clique em <b>Salvar alterações</b>.
+    </div>
+  </div>
+
+  <div id="app">
+    <div id="board"></div>
+  </div>
+
+  <div id="mobileAviso">
+    No celular, arraste a tela para navegar. No modo admin, toque em uma caixa para editar.
+  </div>
+
+<script>
+/* =========================================================
+   FIREBASE
+   ========================================================= */
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCm7rf4Iep82wkEsxZYYCHvS2oD4dvm5aI",
+  authDomain: "ramal-70e25.firebaseapp.com",
+  databaseURL: "https://ramal-70e25-default-rtdb.firebaseio.com",
+  projectId: "ramal-70e25",
+  storageBucket: "ramal-70e25.firebasestorage.app",
+  messagingSenderId: "277968674616",
+  appId: "1:277968674616:web:4b7a4b4d2240434dedebcd"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+const refObjetos = db.ref("copom_painel_editavel/objetos");
+
+/* =========================================================
+   ELEMENTOS
+   ========================================================= */
+
+const board = document.getElementById("board");
+const app = document.getElementById("app");
+
+const btnAdmin = document.getElementById("btnAdmin");
+const btnPDF = document.getElementById("btnPDF");
+const btnSalvar = document.getElementById("btnSalvar");
+const btnSair = document.getElementById("btnSair");
+const btnReset = document.getElementById("btnReset");
+const painel = document.getElementById("painel");
+
+const campos = {
+  texto: document.getElementById("edTexto"),
+  bg: document.getElementById("edBg"),
+  color: document.getElementById("edColor"),
+  fontSize: document.getElementById("edFontSize"),
+  weight: document.getElementById("edWeight"),
+  font: document.getElementById("edFont"),
+  x: document.getElementById("edX"),
+  y: document.getElementById("edY"),
+  w: document.getElementById("edW"),
+  h: document.getElementById("edH"),
+  rot: document.getElementById("edRot"),
+  border: document.getElementById("edBorder"),
+  z: document.getElementById("edZ"),
+  tipo: document.getElementById("edTipo")
+};
+
+/* =========================================================
+   ESTADO
+   ========================================================= */
+
+let objetos = {};
+let adminAtivo = false;
+let selecionado = null;
+let alterado = false;
+let travarFirebase = false;
+let drag = null;
+let resize = null;
+
+/* =========================================================
+   CORES
+   ========================================================= */
+
+const COR = {
+  azul: "#cfe2f3",
+  azulEscuro: "#315da0",
+  verde: "#b7e5a3",
+  verdeEscuro: "#2d5f25",
+  verdeForte: "#3ba95b",
+  cinza: "#c8c8c8",
+  vermelho: "#ff2a0d",
+  vermelhoEscuro: "#b71c11",
+  laranja: "#ff6900",
+  amarelo: "#ffd94f",
+  roxo: "#c979ef",
+  creme: "#fff3bf",
+  branco: "#ffffff",
+  preto: "#111111"
+};
+
+/* =========================================================
+   CRIAR OBJETO PADRÃO
+   ========================================================= */
+
+function add(id, texto, x, y, w, h, bg, color, fontSize, tipo, rot, z, border, weight, font) {
+  objetos[id] = {
+    id,
+    texto: String(texto ?? ""),
+    x: Number(x),
+    y: Number(y),
+    w: Number(w),
+    h: Number(h),
+    bg: bg || COR.azul,
+    color: color || COR.preto,
+    fontSize: Number(fontSize || 18),
+    tipo: tipo || "box",
+    rot: Number(rot || 0),
+    z: Number(z || 1),
+    border: Number(border ?? 2),
+    weight: weight || "bold",
+    font: font || "Arial"
+  };
+}
+
+function addLinha(prefixo, lista, x, y, w, h, bg, fontSize) {
+  lista.forEach((texto, i) => {
+    add(prefixo + "_" + i, texto, x + (i * w), y, w, h, bg, COR.preto, fontSize || 18);
+  });
+}
+
+function pintar(prefixo, indices, bg, color) {
+  indices.forEach(i => {
+    const id = prefixo + "_" + i;
+    if (objetos[id]) {
+      objetos[id].bg = bg;
+      if (color) objetos[id].color = color;
     }
-    async function saveData(){
-      const payload=prepareDataToSave();
-      data=payload;
-      localStorage.setItem('copomData',JSON.stringify(payload));
-      if(!copomRef)throw new Error('Firebase não está conectado.');
-      await copomRef.set({...payload,atualizadoEm:new Date().toISOString()});
+  });
+}
+
+function addTexto(id, texto, x, y, w, h, size, rot) {
+  add(id, texto, x, y, w, h, "transparent", COR.preto, size, "texto-livre", rot || 0, 20, 0, "normal");
+}
+
+function addGrade(prefixo, label, x, y, topo, baixo, vermelho) {
+  add(prefixo + "_label", label, x - 35, y, 35, 58, COR.azulEscuro, "#fff", 18, "box", 90, 2, 2);
+
+  topo.forEach((n, i) => {
+    add(prefixo + "_t_" + i, n, x + i * 66, y, 66, 29, vermelho ? COR.vermelho : COR.azul, COR.preto, 18);
+  });
+
+  baixo.forEach((n, i) => {
+    add(prefixo + "_b_" + i, n, x + i * 66, y + 29, 66, 29, vermelho ? COR.vermelho : COR.azul, COR.preto, 18);
+  });
+}
+
+/* =========================================================
+   LAYOUT INICIAL FIEL À IMAGEM
+   ========================================================= */
+
+function layoutPadrao() {
+  objetos = {};
+
+  addTexto("raio", "⚡", 28, 82, 58, 70, 48, 0);
+  objetos.raio.color = "#d99700";
+  objetos.raio.weight = "bold";
+
+  addTexto("titulo", "COPOM", 500, 30, 220, 55, 45, 0);
+  addTexto("subtitulo", "- Centro de Operações da Polícia Militar", 698, 44, 520, 40, 25, 0);
+
+  addTexto("label_despacho", "Despacho", 25, 220, 80, 220, 24, -90);
+  addTexto("label_emergencia", "Atendimento de Emergência\n190/193", 8, 515, 90, 320, 23, -90);
+  addTexto("label_admin", "Administração", 13, 850, 75, 170, 23, -90);
+
+  /* Despacho - bloco superior esquerdo */
+  addLinha("d1", ["Amb 3\n9967","Amb 4\n1311","49º M\n3149","4º M\n3104","23º M\n3123","16º M\n3116","SUP M5\n9805"], 80, 86, 72, 58, COR.azul, 18);
+  pintar("d1", [0,1], COR.verde);
+  pintar("d1", [6], COR.azulEscuro, "#fff");
+
+  addLinha("d2", ["SUP\nAMB\n9807","14º M\n3114","20º M\n3120","33º M\n3133","25º M\n3125","36º M\n3136","SUP M8\n9808"], 80, 156, 72, 58, COR.azul, 18);
+  pintar("d2", [0], COR.verdeEscuro, "#fff");
+  pintar("d2", [6], COR.azulEscuro, "#fff");
+
+  addLinha("d3", ["Amb 1\n9962","Amb 2\n9960","BPRV\n9958","2º\nBPTran\n3133","1º\nBPTran\n3125","CPChq\n9957","SUP ESP\n9813"], 80, 230, 72, 58, COR.azul, 17);
+  pintar("d3", [0,1], COR.verde);
+  pintar("d3", [2,3,4,5,6], COR.cinza);
+
+  addLinha("d4", ["Enf\nGRAU\n9965","Enf\nSAMU\n9960","Conf 2\n9977","3º GB\n9974","8º GB\n9976","5º/17º\nGB\n9957","SUP B\n9815"], 80, 305, 72, 58, COR.vermelho, 17);
+  pintar("d4", [0,1], COR.laranja);
+  pintar("d4", [6], COR.vermelhoEscuro, "#fff");
+
+  addLinha("d5", ["2º GB\n9973","1º GB\n9960","Med\nGRAU\n9971","4º GB\n9975","18º GB\n9978","Conf 1\n9968","SUP A\n9814"], 80, 380, 72, 58, COR.vermelho, 17);
+  pintar("d5", [6], COR.vermelhoEscuro, "#fff");
+
+  /* Despacho - bloco superior central */
+  addLinha("c1", ["SUP M7\n9807","15º M\n3115","31º M\n3131","16º M\n3126","BAEP\nCPC\n9951","BAEP\nCPM\n9950"], 595, 86, 72, 58, COR.azul, 17);
+  pintar("c1", [0], COR.azulEscuro, "#fff");
+  pintar("c1", [4,5], COR.cinza);
+
+  addLinha("c2", ["SUP M3\n9803","18º M\n3118","5º M\n3105","9º M\n3109","43º M\n3143","SAC 24\n3136"], 595, 156, 72, 58, COR.azul, 18);
+  pintar("c2", [0], COR.azulEscuro, "#fff");
+  pintar("c2", [5], COR.amarelo);
+
+  addLinha("c3", ["SUP M1\n9801","7º M\n3107","11º M\n3111","13º M\n3113","Cabine\nVerde 1\n9953","Cabine\nVerde 2\n3136"], 595, 230, 72, 58, COR.azul, 17);
+  pintar("c3", [0], COR.azulEscuro, "#fff");
+  pintar("c3", [4,5], COR.verdeForte);
+
+  addLinha("c4", ["SUP M2\n9802","46º M\n3146","3º M\n3103","12º M\n3112","VDM 1\n9963","VDM 2\n9964"], 595, 305, 72, 58, COR.azul, 18);
+  pintar("c4", [0], COR.azulEscuro, "#fff");
+  pintar("c4", [4,5], COR.amarelo);
+
+  addLinha("c5", ["SUP M10\n9810","37º M\n3137","1º M\n3101","22º M\n3122","27º M\n3127","VDM 3\n9800"], 595, 380, 72, 58, COR.azul, 18);
+  pintar("c5", [0], COR.azulEscuro, "#fff");
+  pintar("c5", [5], COR.amarelo);
+
+  /* Despacho - bloco superior direito */
+  addLinha("r1", ["SUP M4\n9804","2º M\n3102","39º M\n3139","29º M\n3129","48º M\n3148","CPTM\n9818","SPTrans\n9819"], 1040, 156, 72, 58, COR.azul, 18);
+  pintar("r1", [0], COR.azulEscuro, "#fff");
+  pintar("r1", [5,6], COR.amarelo);
+
+  addLinha("r2", ["SUP M11\n9811","21º M\n3121","8º M\n3108","SUP M12\n9812","17º M\n3117","32º M\n3132","35º M\n3135"], 1040, 230, 72, 58, COR.azul, 18);
+  pintar("r2", [0,3], COR.azulEscuro, "#fff");
+
+  addLinha("r3", ["SUP M9\n9809","19º M\n3119","28º M\n3128","38º M\n3138","GCM\n9820","CET\n9816","Metrô\n9817"], 1040, 305, 72, 58, COR.azul, 18);
+  pintar("r3", [0], COR.azulEscuro, "#fff");
+  pintar("r3", [4,5,6], COR.amarelo);
+
+  addLinha("r4", ["SUP M6\n9806","6º M\n3106","24º M\n3124","10º M\n3110","30º M\n3130","Lilás 1\n3140","Lilás 2\n3141"], 1040, 380, 72, 58, COR.azul, 18);
+  pintar("r4", [0], COR.azulEscuro, "#fff");
+  pintar("r4", [5,6], COR.roxo);
+
+  /* Atendimento de Emergência */
+  add("em_3160", "3160", 115, 452, 66, 34, COR.azulEscuro, "#fff", 19);
+  addLinha("em_esq_top", ["1208","1207","1206","1205","1204"], 115, 486, 66, 29, COR.azul, 18);
+  addLinha("em_centro_top", ["1203","1202","1201","1200","1199","1198"], 630, 486, 66, 29, COR.azul, 18);
+  addLinha("em_dir_top", ["1197","1196","1195","1194","1193","1192","1191"], 1065, 486, 66, 29, COR.azul, 18);
+
+  addGrade("g3161", "3161", 115, 525, [1001,1002,1003,1004,1005,1006], [1020,1021,1022,1023,1024,1025], false);
+  addGrade("g3162", "3162", 115, 590, [1039,1040,1041,1042,1043,1044], [1058,1059,1060,1061,1062,1063], false);
+  addGrade("g3163", "3163", 115, 655, [1077,1078,1079,1080,1081,1082], [1096,1097,1098,1099,1100,1101], false);
+  addGrade("g3164", "3164", 115, 720, [1115,1116,1117,1118,1119,1120], [1134,1135,1136,1137,1138,1139], false);
+  addGrade("g3165", "3165", 115, 785, [1153,1154,1155,1156,1157,1158], [1172,1173,1174,1175,1176,1177], false);
+
+  addGrade("g3166", "3166", 565, 525, [1007,1008,1009,1010,1011,1012,1013], [1026,1027,1028,1029,1030,1031,1032], false);
+
+  add("g3167_label", "3167", 530, 590, 35, 58, COR.azulEscuro, "#fff", 18, "box", 90, 2, 2);
+  ["1045/SMS","1046","1047","1048","1049","1050","1051"].forEach((n, i) => add("g3167_t_" + i, n, 565 + i * 66, 590, 66, 29, COR.azul, COR.preto, 13));
+  ["1064/SMS","1065","1066","1067","1068","1069","1070"].forEach((n, i) => add("g3167_b_" + i, n, 565 + i * 66, 619, 66, 29, COR.azul, COR.preto, 13));
+
+  addGrade("g3168", "3168", 565, 655, [1083,1084,1085,1086,1087,1088,1089], [1102,1103,1104,1105,1106,1107,1108], false);
+  addGrade("g3169", "3169", 565, 720, [1121,1122,1123,1124,1125,1126,1127], [1140,1141,1142,1143,1144,1145,1146], true);
+  addGrade("g3170", "3170", 565, 785, [1159,1160,1161,1162,1163,1164,1165], [1178,1179,1180,1181,1182,1183,1184], true);
+
+  addGrade("g3173", "3173", 1065, 525, [1014,1015,1016,1017,1018,1019], [1033,1034,1035,1036,1037,1038], false);
+  addGrade("g3174", "3174", 1065, 590, [1052,1053,1054,1055,1056,1057], [1071,1072,1073,1074,1075,1076], false);
+  addGrade("g3175", "3175", 1065, 655, [1090,1091,1092,1093,1094,1095], [1109,1110,1111,1112,1113,1114], false);
+  addGrade("g3178", "3178", 1065, 720, [1128,1129,1130,1131,1132,1133], [1147,1148,1149,1150,1151,1152], false);
+  addGrade("g3179", "3179", 1065, 785, [1166,1167,1168,1169,1170,1171], [1185,1186,1187,1188,1189,1190], false);
+  objetos.g3179_b_5.bg = COR.azulEscuro;
+  objetos.g3179_b_5.color = "#fff";
+
+  /* Administração */
+  addLinha("adm1", [
+    "Recepção\n\n3190",
+    "Protocolo\n\n3191",
+    "Estacionam.\nGuarita\n3192",
+    "Auditório\nSala Técnica\n3199",
+    "Logística\n\n*9940\n9941/9942",
+    "Projetos\n\n*9823\n9945",
+    "NAPS\n\n57679906\n57679907",
+    "Sala de Aula\n\n57671001",
+    "Chefia de\nOperações\n*9999\n9996/9997",
+    "Chefia de op.\nCOBOM\n*9998",
+    "ADM Equipes\n\n2011\n2012",
+    "SJD Equipes\n\n1408",
+    "Gab. de Com.\ne Controle\n9981\n9982",
+    "Olho de\nÁguia\n*9903/9828\n9830/9832",
+    "Setor de\nTecnologia\n*9843/9842\n9840/9841"
+  ], 80, 840, 96, 80, COR.creme, 13);
+
+  addLinha("adm2", [
+    "SECRETARIA\n\n*9920/\n9921 / 9923",
+    "SRH\n\n*9920/\n9922",
+    "CPJMD\n\n*9926\n9924 / 9929",
+    "Certidões\n\n*9912\n9913/9914",
+    "Monitoria\n\n9833",
+    "ADM COBOM\n\n9894 / 9897\n9898",
+    "P5\n\n*9899\n9925/9893",
+    "STQ\n\n*9933/*9934\n9931/9932",
+    "Ordenança\n\n9990",
+    "UGE\n\n*9989\n9987/9988",
+    "Agência\nEspecial\n*9860\n9861/9862",
+    "Gerenc. de\nCrises 3º\n9994",
+    "Chefe Div.\nOper.\n*9891",
+    "Chefe Div.\nAdm.\n*9983",
+    "Chefe\nCOBOM\n*9991"
+  ], 80, 932, 96, 78, COR.creme, 13);
+}
+
+/* =========================================================
+   RENDERIZAÇÃO
+   ========================================================= */
+
+function renderizar() {
+  board.innerHTML = "";
+
+  Object.values(objetos).forEach(obj => {
+    const el = document.createElement("div");
+
+    el.className = "box " + (obj.tipo || "box");
+    el.dataset.id = obj.id;
+
+    el.style.left = obj.x + "px";
+    el.style.top = obj.y + "px";
+    el.style.width = obj.w + "px";
+    el.style.height = obj.h + "px";
+    el.style.background = obj.bg || "transparent";
+    el.style.color = obj.color || "#111";
+    el.style.fontSize = obj.fontSize + "px";
+    el.style.fontFamily = obj.font || "Arial";
+    el.style.fontWeight = obj.weight || "bold";
+    el.style.transform = "rotate(" + (obj.rot || 0) + "deg)";
+    el.style.borderWidth = (obj.border ?? 2) + "px";
+    el.style.zIndex = obj.z || 1;
+    el.textContent = obj.texto || "";
+
+    if ((obj.tipo || "box") === "texto-livre") {
+      el.style.border = "none";
+      el.style.background = "transparent";
     }
-    function startFirebaseRealtime(){if(!copomRef)return;copomRef.on('value',snap=>{const v=snap.val();if(v){if(pendingChanges)return;const c=deepClone(v);delete c.atualizadoEm;data=normalizeData(c);localStorage.setItem('copomData',JSON.stringify(data));renderAll();firebaseLoaded=true;return;}if(!firebaseLoaded){copomRef.set(normalizeData(data)).catch(console.error);firebaseLoaded=true;}},e=>alert('Erro ao ler Firebase: '+e.message));}
-    function escapeHtml(t){return String(t??'').replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
-    function textToHtml(t){return escapeHtml(t).split(NL).join('<br>');}
-    function rgbToHex(v){if(v.startsWith('#'))return v;const m=v.match(/\d+/g);return m?'#'+m.slice(0,3).map(n=>Number(n).toString(16).padStart(2,'0')).join(''):'#000000';}
-    function styleOf(key){return data.fieldStyles&&data.fieldStyles[key]?data.fieldStyles[key]:{};}
-    function textCssFromStyle(s){let css='';if(s.textColor)css+='color:'+escapeHtml(s.textColor)+';';else css+='color:#111;';if(s.fontSize)css+='font-size:'+Number(s.fontSize)+'px;';if(s.fontFamily)css+='font-family:'+escapeHtml(s.fontFamily)+';';if(s.bold)css+='font-weight:900;';if(s.italic)css+='font-style:italic;';if(s.underline)css+='text-decoration:underline;';if(s.align)css+='text-align:'+escapeHtml(s.align)+';justify-content:'+(s.align==='left'?'flex-start':s.align==='right'?'flex-end':'center')+';';return css?' style="'+css+'"':'';}
-    function textMoveCss(key,part){const p=data.textPositions&&data.textPositions[key]&&data.textPositions[key][part]?data.textPositions[key][part]:null;const isVerticalTitle=key==='titulo-despacho'||key==='titulo-atendimento'||key==='titulo-atendimento-ramal'||key==='titulo-administracao';const x=p?Number(p.x||0):0;const y=p?Number(p.y||0):0;const rot=isVerticalTitle?-90:(p&&Number.isFinite(Number(p.rot))?Number(p.rot):0);const size=p&&Number.isFinite(Number(p.size))?';font-size:'+Number(p.size)+'px;':'';return ' transform:translate('+x+'px,'+y+'px) rotate('+rot+'deg);'+size;}
-    function cssFromStyle(s){let css='';if(s.textColor)css+='color:'+escapeHtml(s.textColor)+';';if(s.fontSize)css+='font-size:'+Number(s.fontSize)+'px;';if(s.fontFamily)css+='font-family:'+escapeHtml(s.fontFamily)+';';if(s.bold)css+='font-weight:900;';if(s.italic)css+='font-style:italic;';if(s.underline)css+='text-decoration:underline;';if(s.align)css+='text-align:'+escapeHtml(s.align)+';';if(Number.isFinite(Number(s.width)))css+='width:'+Number(s.width)+'px;';if(Number.isFinite(Number(s.height)))css+='height:'+Number(s.height)+'px;min-height:'+Number(s.height)+'px;';if(Number.isFinite(Number(s.x))&&Number.isFinite(Number(s.y)))css+='position:absolute;left:'+Number(s.x)+'px;top:'+Number(s.y)+'px;z-index:'+(Number(s.z)||20)+';';return css?' style="'+css+'"':'';}
-    function classFromStyle(defaultClass,s){return s.bgClass||defaultClass||'blue';}
-    function applyColors(){Object.entries(data.colors||{}).forEach(([k,v])=>root.style.setProperty(k,v));document.querySelectorAll('input[type="color"][data-var]').forEach(input=>{input.value=rgbToHex(getComputedStyle(root).getPropertyValue(input.dataset.var).trim());});}
-    function boxHTML(label,num,color='blue',extra='',key=''){const s=styleOf(key),cls=classFromStyle(color,s);return '<div class="box '+cls+' '+extra+'" draggable="true" data-key="'+escapeHtml(key)+'"'+cssFromStyle(s)+'><div class="label" data-text-key="'+escapeHtml(key)+'" data-text-part="label" style="'+textMoveCss(key,'label')+'">'+textToHtml(label)+'</div><div class="num" data-text-key="'+escapeHtml(key)+'" data-text-part="num" style="'+textMoveCss(key,'num')+'">'+textToHtml(num)+'</div></div>';}
-    function renderTitle(){const title=data.title||defaultData.title,s=escapeHtml(title);document.getElementById('mainTitle').innerHTML=s.includes(' - ')?s.replace(' - ',' <span>- ')+'</span>':s;applyTitleTextPositions();}
-    function applyTitleTextPositions(){[['titulo-despacho','label'],['titulo-atendimento','label'],['titulo-atendimento-ramal','label'],['titulo-administracao','label']].forEach(([key,part])=>{const el=document.querySelector('[data-text-key="'+key+'"][data-text-part="'+part+'"]');if(el)el.style.transform=textMoveCss(key,part).replace(' transform:','');});}
-    function renderDispatch(){document.getElementById('dispatchGrid').innerHTML=data.dispatch.map((col,ci)=>'<div class="dispatch-col">'+col.map((line,li)=>'<div class="line grid-'+Math.min(line.length,7)+'">'+line.map((item,ii)=>boxHTML(item[0],item[1],item[2],'','dispatch-'+ci+'-'+li+'-'+ii)).join('')+'</div>').join('')+'</div>').join('');}
-    function renderEmergency(){document.getElementById('emergencyGrid').innerHTML=data.emergency.map((group,gi)=>'<div class="phone-group"><div class="phone-title-row" style="grid-template-columns:repeat('+group.tops.length+',1fr)">'+group.tops.map((n,i)=>boxHTML('',n,i===0&&group.tops[0]==='3160'?'blue-dark':'blue','small','top-'+gi+'-'+i)).join('')+'</div>'+group.rows.map((row,ri)=>'<div class="phone-table"><div class="side-code '+classFromStyle(row.red?'red':'blue-dark',styleOf('code-'+gi+'-'+ri))+'" draggable="true" data-key="code-'+gi+'-'+ri+'"'+cssFromStyle(styleOf('code-'+gi+'-'+ri))+'><span>'+escapeHtml(row.code)+'</span></div><div class="number-grid" style="grid-template-columns:repeat('+Math.ceil(row.nums.length/2)+',1fr)">'+row.nums.map((n,ni)=>boxHTML('',n,row.red?'red':'blue','small','num-'+gi+'-'+ri+'-'+ni)).join('')+'</div></div>').join('')+'</div>').join('');}
-    function renderAdmin(){document.getElementById('adminGrid').innerHTML=data.admin.map((it,ai)=>{const key='admin-'+ai,s=styleOf(key),cardCss=cssFromStyle(s),textCss=textCssFromStyle(s);const titleCss=textCss.replace(' style="',' style="'+textMoveCss(key,'label'));const bodyCss=textCss.replace(' style="',' style="'+textMoveCss(key,'num'));return '<div class="admin-card" draggable="true" data-key="'+key+'"'+cardCss+'><div class="title" data-text-key="'+key+'" data-text-part="label"'+titleCss+'>'+textToHtml(it[0])+'</div><div class="body" data-text-key="'+key+'" data-text-part="num"'+bodyCss+'>'+textToHtml(it[1])+'</div></div>';}).join('');}
-    function renderAll(){renderTitle();applyColors();renderDispatch();renderEmergency();renderAdmin();fillFieldSelect();bindDragDrop();bindResizeHandles();bindTextMove();}
-    function allEditableFields(){const f=[];data.dispatch.forEach((col,ci)=>col.forEach((line,li)=>line.forEach((it,ii)=>f.push({type:'dispatch',path:[ci,li,ii],key:'dispatch-'+ci+'-'+li+'-'+ii,name:'Despacho: '+it[0]+' '+it[1]}))));data.emergency.forEach((g,gi)=>{g.tops.forEach((n,ti)=>f.push({type:'top',path:[gi,ti],key:'top-'+gi+'-'+ti,name:'Emergência topo: '+n}));g.rows.forEach((r,ri)=>{f.push({type:'code',path:[gi,ri],key:'code-'+gi+'-'+ri,name:'Emergência lateral: '+r.code});r.nums.forEach((n,ni)=>f.push({type:'num',path:[gi,ri,ni],key:'num-'+gi+'-'+ri+'-'+ni,name:'Emergência número: '+n}));});});data.admin.forEach((it,ai)=>f.push({type:'admin',path:[ai],key:'admin-'+ai,name:'Administração: '+it[0]+' '+it[1]}));return f;}
-    function fillFieldSelect(){const sel=document.getElementById('fieldSelect'),old=sel.value;fieldsCache=allEditableFields();sel.innerHTML=fieldsCache.map((f,i)=>'<option value="'+i+'">'+escapeHtml(f.name)+'</option>').join('');if(old&&fieldsCache[old])sel.value=old;loadSelectedField();}
-    function getFieldObj(field){const p=field.path;if(field.type==='dispatch')return data.dispatch[p[0]][p[1]][p[2]];if(field.type==='admin')return data.admin[p[0]];if(field.type==='top')return ['',data.emergency[p[0]].tops[p[1]],'blue'];if(field.type==='code')return ['',data.emergency[p[0]].rows[p[1]].code,data.emergency[p[0]].rows[p[1]].red?'red':'blue-dark'];if(field.type==='num')return ['',data.emergency[p[0]].rows[p[1]].nums[p[2]],data.emergency[p[0]].rows[p[1]].red?'red':'blue'];return ['','','blue'];}
-    function setFieldObj(field,label,num,color,style){const p=field.path;if(!data.fieldStyles)data.fieldStyles={};const s={...style,bgClass:color};data.fieldStyles[field.key]=s;if(field.type==='dispatch')data.dispatch[p[0]][p[1]][p[2]]=[label,num,color];if(field.type==='admin')data.admin[p[0]]=[label,num];if(field.type==='top')data.emergency[p[0]].tops[p[1]]=num;if(field.type==='code'){data.emergency[p[0]].rows[p[1]].code=num;data.emergency[p[0]].rows[p[1]].red=color==='red';}if(field.type==='num')data.emergency[p[0]].rows[p[1]].nums[p[2]]=num;}
-    function styleForm(){return{textColor:document.getElementById('fieldTextColor').value,fontSize:document.getElementById('fieldFontSize').value,fontFamily:document.getElementById('fieldFontFamily').value,align:document.getElementById('fieldAlign').value,bold:document.getElementById('fieldBold').value==='true',italic:document.getElementById('fieldItalic').value==='true',underline:document.getElementById('fieldUnderline').value==='true'};}
-    function loadSelectedField(){const field=fieldsCache[Number(document.getElementById('fieldSelect').value||0)];if(!field)return;const obj=getFieldObj(field),s=styleOf(field.key);document.getElementById('fieldLabel').value=obj[0]||'';document.getElementById('fieldNum').value=obj[1]||'';document.getElementById('fieldColor').value=s.bgClass||obj[2]||'blue';document.getElementById('fieldTextColor').value=s.textColor||'#111111';document.getElementById('fieldFontSize').value=s.fontSize||'';document.getElementById('fieldFontFamily').value=s.fontFamily||'';document.getElementById('fieldAlign').value=s.align||'center';document.getElementById('fieldBold').value=s.bold?'true':'false';document.getElementById('fieldItalic').value=s.italic?'true':'false';document.getElementById('fieldUnderline').value=s.underline?'true':'false';}
-    function fieldByKey(key){return allEditableFields().find(f=>f.key===key);}
-    function markChanged(){pendingChanges=true;document.getElementById('floatingSave').classList.remove('hidden');}
-    async function savePendingChanges(){
-      const btn=document.getElementById('floatingSave'),old=btn.textContent;
-      try{
-        btn.disabled=true;btn.textContent='Salvando...';
-        data=prepareDataToSave();
-        await saveData();
-        pendingChanges=false;
-        btn.classList.add('hidden');
-        localStorage.setItem('copomData',JSON.stringify(data));
-        renderAll();
-        alert('Nova configuração salva no Firebase. Todos que acessarem a página verão essa configuração.');
-      }catch(e){alert('Erro ao salvar: '+e.message);}finally{btn.disabled=false;btn.textContent=old;}
+
+    if (obj.id === selecionado) {
+      el.classList.add("selecionado");
     }
-    function requireMoveLogin(){
-      backdrop.classList.add('show');
-      document.getElementById('loginArea').classList.remove('hidden');
-      document.getElementById('configArea').classList.add('hidden');
-      document.getElementById('loginError').style.display='none';
-      document.getElementById('loginUser').value='';
-      document.getElementById('loginPass').value='';
 
-      const entrar=document.getElementById('doLogin');
-      entrar.onclick=function(ev){
-        if(ev)ev.preventDefault();
-        const u=document.getElementById('loginUser').value.trim();
-        const p=document.getElementById('loginPass').value.trim();
+    if (adminAtivo) {
+      el.addEventListener("mousedown", iniciarDrag);
+      el.addEventListener("touchstart", iniciarDrag, { passive: false });
 
-        if(u==='admin'&&p==='ndit'){
-          try{
-            if(typeof freezeLayoutPositions==='function')freezeLayoutPositions();
-          }catch(error){
-            console.warn('Não foi possível fixar layout antes de mover:',error);
-          }
-          moveModeEnabled=true;
-          document.body.classList.add('move-enabled');
-          backdrop.classList.remove('show');
-          renderAll();
-          markChanged();
-          alert('Movimentação habilitada. Agora você pode mover objetos e textos.');
-          entrar.onclick=normalLogin;
-          return;
-        }
-
-        document.getElementById('loginError').style.display='block';
-      };
-    }
-    function swapFields(k1,k2){const f1=fieldByKey(k1),f2=fieldByKey(k2);if(!f1||!f2||f1.type!==f2.type)return false;const o1=getCompleteObject(f1),o2=getCompleteObject(f2);putCompleteObject(f1,o2);putCompleteObject(f2,o1);return true;}
-    function snapPosition(key,x,y,w,h){const limit=14;Object.keys(data.fieldStyles||{}).forEach(otherKey=>{if(otherKey===key)return;const s=data.fieldStyles[otherKey]||{};if(!Number.isFinite(Number(s.x))||!Number.isFinite(Number(s.y))||!Number.isFinite(Number(s.width))||!Number.isFinite(Number(s.height)))return;const ox=Number(s.x),oy=Number(s.y),ow=Number(s.width),oh=Number(s.height);const verticalOverlap=y<oy+oh&&y+h>oy;const horizontalOverlap=x<ox+ow&&x+w>ox;if(verticalOverlap){if(Math.abs((x+w)-ox)<=limit)x=ox-w;if(Math.abs(x-(ox+ow))<=limit)x=ox+ow;}if(horizontalOverlap){if(Math.abs((y+h)-oy)<=limit)y=oy-h;if(Math.abs(y-(oy+oh))<=limit)y=oy+oh;}});return{x:Math.round(x),y:Math.round(y)};}
-    function setFreePosition(key,clientX,clientY){
-      const field=fieldByKey(key);if(!field)return false;
-      if(!data.fieldStyles)data.fieldStyles={};
-      const page=document.querySelector('.page');
-      const rect=page.getBoundingClientRect();
-      const current=deepClone(styleOf(key));
-      const el=document.querySelector('[data-key="'+CSS.escape(key)+'"]');
-      const elRect=el?el.getBoundingClientRect():null;
-      const savedW=Number(current.width);const savedH=Number(current.height);
-      current.width=Number.isFinite(savedW)&&savedW>0?savedW:(Math.round(dragStartW)||(elRect?Math.round(elRect.width):80));
-      current.height=Number.isFinite(savedH)&&savedH>0?savedH:(Math.round(dragStartH)||(elRect?Math.round(elRect.height):40));
-      let x=Math.round(clientX-rect.left+page.scrollLeft-dragOffsetX);
-      let y=Math.round(clientY-rect.top+page.scrollTop-dragOffsetY);
-      const snapped=typeof snapPosition==='function'?snapPosition(key,x,y,current.width,current.height):{x,y};
-      current.x=snapped.x;current.y=snapped.y;current.z=(Date.now()%100000)+100;
-      data.fieldStyles[key]=current;
-      localStorage.setItem('copomData',JSON.stringify(prepareDataToSave()));
-      return true;
-    }
-    function swapLines(k1,k2){const f1=fieldByKey(k1),f2=fieldByKey(k2);if(!f1||!f2)return false;if(f1.type==='dispatch'&&f2.type==='dispatch'){const p1=f1.path,p2=f2.path,tmp=deepClone(data.dispatch[p1[0]][p1[1]]);data.dispatch[p1[0]][p1[1]]=deepClone(data.dispatch[p2[0]][p2[1]]);data.dispatch[p2[0]][p2[1]]=tmp;return true;}if((f1.type==='num'||f1.type==='code')&&(f2.type==='num'||f2.type==='code')){const p1=f1.path,p2=f2.path,tmp=deepClone(data.emergency[p1[0]].rows[p1[1]]);data.emergency[p1[0]].rows[p1[1]]=deepClone(data.emergency[p2[0]].rows[p2[1]]);data.emergency[p2[0]].rows[p2[1]]=tmp;return true;}return false;}
-    function selectObject(key){selectedKey=key;document.querySelectorAll('[data-key]').forEach(el=>el.classList.toggle('selected-move',el.dataset.key===key));}
-    function selectedField(){return selectedKey?fieldByKey(selectedKey):null;}
-    function duplicateSelected(){const f=selectedField();if(!f)return;const obj=getCompleteObject(f);if(!data.fieldStyles)data.fieldStyles={};let newKey='';if(f.type==='dispatch'){const p=f.path;data.dispatch[p[0]][p[1]].splice(p[2]+1,0,[obj.label,obj.num,obj.color]);newKey='dispatch-'+p[0]+'-'+p[1]+'-'+(p[2]+1);}else if(f.type==='admin'){const p=f.path;data.admin.splice(p[0]+1,0,[obj.label,obj.num]);newKey='admin-'+(p[0]+1);}else if(f.type==='num'){const p=f.path;data.emergency[p[0]].rows[p[1]].nums.splice(p[2]+1,0,obj.num);newKey='num-'+p[0]+'-'+p[1]+'-'+(p[2]+1);}else if(f.type==='top'){const p=f.path;data.emergency[p[0]].tops.splice(p[1]+1,0,obj.num);newKey='top-'+p[0]+'-'+(p[1]+1);}else if(f.type==='code'){const p=f.path;const row=deepClone(data.emergency[p[0]].rows[p[1]]);data.emergency[p[0]].rows.splice(p[1]+1,0,row);newKey='code-'+p[0]+'-'+(p[1]+1);}if(newKey){const s=deepClone(obj.style||{});s.x=Number(s.x||0)+18;s.y=Number(s.y||0)+18;s.z=(Date.now()%100000)+200;data.fieldStyles[newKey]=s;selectedKey=newKey;renderAll();selectObject(newKey);markChanged();}}
-    function deleteSelected(){const f=selectedField();if(!f)return;if(!confirm('Excluir este objeto?'))return;const p=f.path;if(f.type==='dispatch')data.dispatch[p[0]][p[1]].splice(p[2],1);if(f.type==='admin')data.admin.splice(p[0],1);if(f.type==='num')data.emergency[p[0]].rows[p[1]].nums.splice(p[2],1);if(f.type==='top')data.emergency[p[0]].tops.splice(p[1],1);if(f.type==='code')data.emergency[p[0]].rows.splice(p[1],1);if(data.fieldStyles)delete data.fieldStyles[f.key];selectedKey=null;hideContextMenu();renderAll();markChanged();}
-    function hideContextMenu(){const old=document.getElementById('customContextMenu');if(old)old.remove();}
-    function showContextMenu(x,y,key){hideContextMenu();selectObject(key);const menu=document.createElement('div');menu.id='customContextMenu';menu.className='custom-menu';menu.innerHTML='<button id="ctxDuplicate">Duplicar</button><button id="ctxDelete">Excluir</button>';document.body.appendChild(menu);const pad=8;const rect=menu.getBoundingClientRect();let left=x,top=y;if(left+rect.width>window.innerWidth-pad)left=window.innerWidth-rect.width-pad;if(top+rect.height>window.innerHeight-pad)top=window.innerHeight-rect.height-pad;if(left<pad)left=pad;if(top<pad)top=pad;menu.style.left=left+'px';menu.style.top=top+'px';document.getElementById('ctxDuplicate').onclick=()=>{hideContextMenu();duplicateSelected();};document.getElementById('ctxDelete').onclick=()=>{hideContextMenu();deleteSelected();};}
-    function moveSelectedByKeyboard(ev){if(!moveModeEnabled||!selectedKey)return;const keys=['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'];if(!keys.includes(ev.key))return;ev.preventDefault();if(!data.fieldStyles)data.fieldStyles={};const s=deepClone(styleOf(selectedKey));const el=document.querySelector('[data-key="'+CSS.escape(selectedKey)+'"]');if(!Number.isFinite(Number(s.x))||!Number.isFinite(Number(s.y))){const page=document.querySelector('.page'),pr=page.getBoundingClientRect(),r=el.getBoundingClientRect();s.x=Math.round(r.left-pr.left+page.scrollLeft);s.y=Math.round(r.top-pr.top+page.scrollTop);}if(!Number.isFinite(Number(s.width))&&el)s.width=Math.round(el.getBoundingClientRect().width);if(!Number.isFinite(Number(s.height))&&el)s.height=Math.round(el.getBoundingClientRect().height);const step=ev.shiftKey?10:1;if(ev.key==='ArrowUp')s.y-=step;if(ev.key==='ArrowDown')s.y+=step;if(ev.key==='ArrowLeft')s.x-=step;if(ev.key==='ArrowRight')s.x+=step;s.z=(Date.now()%100000)+200;data.fieldStyles[selectedKey]=s;renderAll();selectObject(selectedKey);markChanged();}
-    function bindDragDrop(){document.querySelectorAll('[data-key][draggable="true"]').forEach(el=>{el.onclick=()=>{if(moveModeEnabled)selectObject(el.dataset.key);};el.oncontextmenu=e=>{if(!moveModeEnabled)return;e.preventDefault();showContextMenu(e.clientX,e.clientY,el.dataset.key);};el.ondragstart=e=>{if(!moveModeEnabled){e.preventDefault();alert('Para movimentar, clique no botão Mover e informe usuário e senha.');return;}dragKey=el.dataset.key;selectedKey=dragKey;selectObject(dragKey);draggingFree=true;const r=el.getBoundingClientRect();dragOffsetX=e.clientX-r.left;dragOffsetY=e.clientY-r.top;dragStartW=Math.round(r.width);dragStartH=Math.round(r.height);e.dataTransfer.setData('text/plain',dragKey);};el.ondragover=e=>{if(moveModeEnabled){e.preventDefault();el.classList.add('drag-over');}};el.ondragleave=()=>el.classList.remove('drag-over');el.ondrop=e=>{if(!moveModeEnabled)return;e.preventDefault();el.classList.remove('drag-over');const from=e.dataTransfer.getData('text/plain')||dragKey,to=el.dataset.key;if(!from)return;const choice=prompt('Como deseja mover?'+NL+'1 - Mover somente este objeto para a posição X/Y'+NL+'2 - Trocar linha inteira'+NL+'3 - Trocar objeto completo com este bloco','1');let ok=false;if(choice==='2'&&to&&from!==to)ok=swapLines(from,to);else if(choice==='3'&&to&&from!==to)ok=swapFields(from,to);else ok=setFreePosition(from,e.clientX,e.clientY);if(ok){renderAll();selectObject(from);markChanged();}else alert('Não foi possível mover.');};});}
-    document.addEventListener('dragover',e=>{if(moveModeEnabled&&draggingFree)e.preventDefault();});
-    document.addEventListener('drop',e=>{if(!moveModeEnabled||!draggingFree)return;const target=e.target.closest('[data-key]');if(target)return;e.preventDefault();if(setFreePosition(dragKey,e.clientX,e.clientY)){draggingFree=false;renderAll();markChanged();}});
-    document.addEventListener('dragend',()=>{draggingFree=false;});
-    document.addEventListener('keydown',moveSelectedByKeyboard);
-    document.addEventListener('click',e=>{if(!e.target.closest('.custom-menu'))hideContextMenu();});
-    function bindResizeHandles(){document.querySelectorAll('.resize-handle').forEach(h=>h.remove());if(!moveModeEnabled)return;document.querySelectorAll('[data-key]').forEach(el=>{if(getComputedStyle(el).position==='static')el.style.position='relative';['tl','tr','bl','br'].forEach(pos=>{const h=document.createElement('span');h.className='resize-handle '+pos;h.dataset.pos=pos;el.appendChild(h);h.onpointerdown=ev=>{ev.preventDefault();ev.stopPropagation();el.draggable=false;const key=el.dataset.key;const startX=ev.clientX,startY=ev.clientY;const rect=el.getBoundingClientRect();const pageRect=document.querySelector('.page').getBoundingClientRect();const startLeft=rect.left-pageRect.left+document.querySelector('.page').scrollLeft;const startTop=rect.top-pageRect.top+document.querySelector('.page').scrollTop;const startW=rect.width,startH=rect.height;const style=deepClone(styleOf(key));const move=e=>{let dx=e.clientX-startX,dy=e.clientY-startY;let w=startW,hgt=startH,left=startLeft,top=startTop;if(pos.indexOf('r')>=0)w=startW+dx;if(pos.indexOf('l')>=0){w=startW-dx;left=startLeft+dx;}if(pos.indexOf('b')>=0)hgt=startH+dy;if(pos.indexOf('t')>=0){hgt=startH-dy;top=startTop+dy;}w=Math.max(35,Math.round(w));hgt=Math.max(20,Math.round(hgt));el.style.width=w+'px';el.style.height=hgt+'px';el.style.minHeight=hgt+'px';if(pos.indexOf('l')>=0||pos.indexOf('t')>=0){el.style.position='absolute';el.style.left=Math.round(left)+'px';el.style.top=Math.round(top)+'px';}};const up=e=>{document.removeEventListener('pointermove',move);document.removeEventListener('pointerup',up);el.draggable=true;const finalRect=el.getBoundingClientRect();style.width=Math.round(finalRect.width);style.height=Math.round(finalRect.height);if(el.style.position==='absolute'){style.x=parseInt(el.style.left,10)||0;style.y=parseInt(el.style.top,10)||0;style.z=(Date.now()%100000)+100;}if(!data.fieldStyles)data.fieldStyles={};data.fieldStyles[key]=style;markChanged();};document.addEventListener('pointermove',move);document.addEventListener('pointerup',up);};});});}
-    function bindTextMove(){
-      document.querySelectorAll('.text-resize-handle').forEach(h=>h.remove());
-      document.querySelectorAll('[data-text-key]').forEach(el=>{
-        const key=el.dataset.textKey;
-        const part=el.dataset.textPart;
-        const isVerticalTitle=key==='titulo-despacho'||key==='titulo-atendimento'||key==='titulo-atendimento-ramal'||key==='titulo-administracao';
-
-        el.onclick=ev=>{
-          if(!moveModeEnabled||!isVerticalTitle)return;
-          ev.stopPropagation();
-          document.querySelectorAll('[data-text-key]').forEach(t=>t.classList.remove('selected-move'));
-          el.classList.add('selected-move');
-        };
-
-        if(moveModeEnabled&&isVerticalTitle){
-          ['tl','tr','bl','br'].forEach(pos=>{
-            const h=document.createElement('span');
-            h.className='resize-handle text-resize-handle '+pos;
-            h.dataset.pos=pos;
-            el.appendChild(h);
-            h.onpointerdown=ev=>{
-              ev.preventDefault();
-              ev.stopPropagation();
-              if(!data.textPositions)data.textPositions={};
-              if(!data.textPositions[key])data.textPositions[key]={};
-              const current=data.textPositions[key][part]||{};
-              const startSize=Number(current.size)||parseFloat(getComputedStyle(el).fontSize)||24;
-              const sx=ev.clientX;
-              const sy=ev.clientY;
-              const move=e=>{
-                const delta=(e.clientX-sx)+(e.clientY-sy);
-                const novo=Math.max(10,Math.min(100,Math.round(startSize+(delta/3))));
-                el.style.fontSize=novo+'px';
-              };
-              const up=e=>{
-                document.removeEventListener('pointermove',move);
-                document.removeEventListener('pointerup',up);
-                const delta=(e.clientX-sx)+(e.clientY-sy);
-                const novo=Math.max(10,Math.min(100,Math.round(startSize+(delta/3))));
-                data.textPositions[key][part]={...current,size:novo};
-                markChanged();
-              };
-              document.addEventListener('pointermove',move);
-              document.addEventListener('pointerup',up);
-            };
-          });
-        }
-
-        el.onwheel=ev=>{
-          if(!moveModeEnabled)return;
-          if(!isVerticalTitle)return;
-          ev.preventDefault();
-          ev.stopPropagation();
-          if(!data.textPositions)data.textPositions={};
-          if(!data.textPositions[key])data.textPositions[key]={};
-          const current=data.textPositions[key][part]||{};
-          const atual=Number(current.size)||parseFloat(getComputedStyle(el).fontSize)||24;
-          const novo=Math.max(10,Math.min(100,Math.round(atual+(ev.deltaY<0?2:-2))));
-          data.textPositions[key][part]={...current,size:novo};
-          el.style.fontSize=novo+'px';
-          markChanged();
-        };
-
-        el.ondblclick=ev=>{
-          if(!moveModeEnabled)return;
-          ev.preventDefault();
-          ev.stopPropagation();
-          if(!data.textPositions)data.textPositions={};
-          if(!data.textPositions[key])data.textPositions[key]={};
-          const current=data.textPositions[key][part]||{};
-          const defaultRot=isVerticalTitle?-90:0;
-          const angle=prompt('Digite o ângulo do texto em graus. Exemplo: -90 deixa vertical.',String(Number.isFinite(Number(current.rot))?current.rot:defaultRot));
-          if(angle===null)return;
-          data.textPositions[key][part]={...current,rot:Number(angle)};
-          el.style.transform=textMoveCss(key,part).replace(' transform:','');
-          markChanged();
-        };
-
-        el.onpointerdown=ev=>{
-          if(!moveModeEnabled)return;
-          if(ev.target.classList&&ev.target.classList.contains('resize-handle'))return;
-          ev.preventDefault();
-          ev.stopPropagation();
-          if(!data.textPositions)data.textPositions={};
-          if(!data.textPositions[key])data.textPositions[key]={};
-          const start=data.textPositions[key][part]||{x:0,y:0};
-          const sx=ev.clientX;
-          const sy=ev.clientY;
-          const move=e=>{
-            const x=Math.round(Number(start.x||0)+(e.clientX-sx));
-            const y=Math.round(Number(start.y||0)+(e.clientY-sy));
-            const rot=Number.isFinite(Number(start.rot))?Number(start.rot):(isVerticalTitle?-90:0);
-            const size=Number.isFinite(Number(start.size))?';font-size:'+Number(start.size)+'px;':'';
-            el.style.transform='translate('+x+'px,'+y+'px) rotate('+rot+'deg)';
-            if(size)el.style.fontSize=Number(start.size)+'px';
-          };
-          const up=e=>{
-            document.removeEventListener('pointermove',move);
-            document.removeEventListener('pointerup',up);
-            data.textPositions[key][part]={...start,x:Math.round(Number(start.x||0)+(e.clientX-sx)),y:Math.round(Number(start.y||0)+(e.clientY-sy))};
-            markChanged();
-          };
-          document.addEventListener('pointermove',move);
-          document.addEventListener('pointerup',up);
-        };
+      el.addEventListener("click", function(e) {
+        e.stopPropagation();
+        selecionar(obj.id);
       });
+
+      const dot = document.createElement("div");
+      dot.className = "resize-dot";
+      dot.addEventListener("mousedown", iniciarResize);
+      dot.addEventListener("touchstart", iniciarResize, { passive: false });
+      el.appendChild(dot);
     }
-    function addBox(){const area=document.getElementById('addArea').value,label=document.getElementById('addLabel').value||'Novo',num=document.getElementById('addNumber').value||'0000',color=document.getElementById('addColor').value;if(area==='admin')data.admin.push([label,num]);if(area==='emergency'){const gi=Number(document.getElementById('addGroup').value),ri=Number(document.getElementById('addRow').value);data.emergency[gi].rows[ri].nums.push(num);if(color==='red')data.emergency[gi].rows[ri].red=true;}if(area==='dispatch'){let line=data.dispatch[0][data.dispatch[0].length-1];if(line.length>=7){data.dispatch[0].push([]);line=data.dispatch[0][data.dispatch[0].length-1];}line.push([label,num,color]);}renderAll();markChanged();alert('Novo ramal adicionado na tela. Clique em Salvar nova configuração.');}
-    function getCurrentHtmlWithEmbeddedData(){const html='<!DOCTYPE html>'+NL+document.documentElement.outerHTML;const dt='const defaultData = '+JSON.stringify(data,null,2)+';'+NL+'    let firebaseDb';return html.replace(/const defaultData = \{[\s\S]*?\};\s*let firebaseDb/,dt);}
-    function downloadUpdatedHtml(){const b=new Blob([getCurrentHtmlWithEmbeddedData()],{type:'text/html;charset=utf-8'}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download='copom-atualizado.html';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(u);}
-    async function generatePdf(){const btn=document.getElementById('generatePdf'),old=btn.textContent,page=document.querySelector('.page'),actions=document.querySelector('.header-actions');try{if(!window.html2canvas||!window.jspdf)throw new Error('Bibliotecas de PDF não carregadas.');btn.textContent='Gerando...';btn.disabled=true;page.classList.add('pdf-export');actions.style.display='none';await new Promise(r=>setTimeout(r,250));const canvas=await html2canvas(page,{scale:3,useCORS:true,backgroundColor:'#fff'});const{jsPDF}=window.jspdf,pdf=new jsPDF({orientation:canvas.width>canvas.height?'landscape':'portrait',unit:'px',format:[canvas.width,canvas.height],compress:true});const margem=60;const imgW=canvas.width-(margem*2);const imgH=canvas.height-(margem*2);pdf.addImage(canvas.toDataURL('image/png',1),'PNG',margem,margem,imgW,imgH);pdf.save('copom.pdf');}catch(e){alert('Não foi possível gerar o PDF: '+e.message);}finally{page.classList.remove('pdf-export');actions.style.display='flex';btn.textContent=old;btn.disabled=false;}}
-    function normalLogin(){const u=document.getElementById('loginUser').value.trim(),p=document.getElementById('loginPass').value.trim();if(u==='admin'&&p==='ndit'){document.getElementById('loginError').style.display='none';document.getElementById('loginArea').classList.add('hidden');document.getElementById('configArea').classList.remove('hidden');document.getElementById('titleInput').value=data.title;applyColors();fillFieldSelect();}else document.getElementById('loginError').style.display='block';}
-    function findQuickEditTarget(el){const node=el.closest('[data-key]');return node?fieldByKey(node.dataset.key):null;}
-    function openQuickEdit(target){quickEditTarget=target;const cur=getFieldObj(target);backdrop.classList.add('show');document.getElementById('loginArea').classList.remove('hidden');document.getElementById('configArea').classList.add('hidden');document.getElementById('loginError').style.display='none';document.getElementById('loginUser').value='';document.getElementById('loginPass').value='';document.getElementById('doLogin').onclick=()=>{const u=document.getElementById('loginUser').value.trim(),p=document.getElementById('loginPass').value.trim();if(u!=='admin'||p!=='ndit'){document.getElementById('loginError').style.display='block';return;}const label=prompt('Editar texto superior/título:',cur[0]||'');if(label===null){closeQuickEdit();return;}const num=prompt('Editar número/texto inferior:',cur[1]||'');if(num===null){closeQuickEdit();return;}setFieldObj(quickEditTarget,label,num,styleOf(quickEditTarget.key).bgClass||cur[2]||'blue',styleOf(quickEditTarget.key));renderAll();markChanged();closeQuickEdit();};}
-    function closeQuickEdit(){backdrop.classList.remove('show');quickEditTarget=null;document.getElementById('doLogin').onclick=normalLogin;}
-    function runSelfTests(){console.assert(('A'+NL+'B').split(NL).length===2,'Teste NL falhou');console.assert(document.getElementById('fieldTextColor'),'Campo cor fonte ausente');console.assert(document.getElementById('fieldFontSize'),'Campo tamanho fonte ausente');console.assert(typeof swapFields==='function','Drag/drop ausente');console.assert(typeof setFreePosition==='function','Posição X/Y ausente');console.assert(typeof freezeLayoutPositions==='function','Fixação de layout ausente');console.assert(typeof bindResizeHandles==='function','Redimensionamento ausente');console.assert(typeof bindTextMove==='function','Movimentação de texto ausente');console.assert(textMoveCss('titulo-despacho','label').includes('rotate(-90deg)'),'Texto vertical não está em -90 graus');console.assert(typeof addBox==='function','Adicionar ramal ausente');console.assert(document.getElementById('openMoveMode'),'Botão mover ausente');console.assert(document.getElementById('floatingSave'),'Botão salvar flutuante ausente');console.assert(typeof textCssFromStyle==='function','CSS de texto admin ausente');console.assert(typeof duplicateSelected==='function','Duplicar ausente');console.assert(typeof deleteSelected==='function','Excluir ausente');console.assert(typeof moveSelectedByKeyboard==='function','Setas do teclado ausentes');console.assert(typeof snapPosition==='function','Atração automática ausente');console.assert('textPositions' in normalizeData({}),'Persistência textPositions ausente');console.assert(typeof prepareDataToSave==='function','Preparação de dados para salvar ausente');console.assert('Como deseja mover?'.indexOf(NL)===-1,'Teste de string simples');}
-    document.getElementById('generatePdf').onclick=generatePdf;document.getElementById('openMoveMode').onclick=requireMoveLogin;document.getElementById('floatingSave').onclick=savePendingChanges;document.getElementById('openSettings').onclick=()=>{backdrop.classList.add('show');document.getElementById('loginArea').classList.remove('hidden');document.getElementById('configArea').classList.add('hidden');document.getElementById('loginError').style.display='none';document.getElementById('loginUser').value='';document.getElementById('loginPass').value='';document.getElementById('doLogin').onclick=normalLogin;};document.getElementById('closeLogin').onclick=()=>backdrop.classList.remove('show');document.getElementById('closeConfig').onclick=()=>backdrop.classList.remove('show');document.getElementById('doLogin').onclick=normalLogin;document.getElementById('fieldSelect').onchange=loadSelectedField;document.querySelectorAll('input[type="color"][data-var]').forEach(input=>{input.oninput=()=>root.style.setProperty(input.dataset.var,input.value);});document.getElementById('saveConfig').onclick=()=>{try{if(!data.colors)data.colors={};if(!data.fieldStyles)data.fieldStyles={};document.querySelectorAll('input[type="color"][data-var]').forEach(input=>{data.colors[input.dataset.var]=input.value;});data.title=document.getElementById('titleInput').value||defaultData.title;const field=fieldsCache[Number(document.getElementById('fieldSelect').value||0)];if(field)setFieldObj(field,document.getElementById('fieldLabel').value,document.getElementById('fieldNum').value,document.getElementById('fieldColor').value,styleForm());renderAll();markChanged();alert('Alteração aplicada na tela. Clique em Salvar nova configuração para gravar no Firebase.');}catch(e){alert('Erro ao aplicar: '+e.message);}};document.getElementById('addBoxBtn').onclick=addBox;document.getElementById('downloadHtml').onclick=downloadUpdatedHtml;document.getElementById('resetAll').onclick=()=>{if(!confirm('Deseja restaurar a página original?'))return;localStorage.removeItem('copomData');data=deepClone(defaultData);renderAll();markChanged();};backdrop.addEventListener('click',e=>{if(e.target===backdrop)backdrop.classList.remove('show');});document.addEventListener('dblclick',e=>{const t=findQuickEditTarget(e.target);if(t){e.preventDefault();openQuickEdit(t);}});
-    data=loadLocalData();initializeFirebaseSafe();renderAll();startFirebaseRealtime();runSelfTests();
-  </script>
+
+    board.appendChild(el);
+  });
+
+  ajustarZoom();
+}
+
+/* =========================================================
+   RESPONSIVO
+   ========================================================= */
+
+function ajustarZoom() {
+  const larguraBase = 1600;
+  const alturaBase = 1030;
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+
+  let escala;
+
+  if (vw <= 768) {
+    escala = Math.max(vw / larguraBase, 0.43);
+    board.style.margin = "0";
+    board.style.transform = "scale(" + escala + ")";
+    board.style.width = larguraBase + "px";
+    board.style.height = alturaBase + "px";
+  } else {
+    escala = Math.min(vw / larguraBase, vh / alturaBase, 1);
+    board.style.transform = "scale(" + escala + ")";
+    board.style.margin = "0 auto";
+  }
+}
+
+window.addEventListener("resize", ajustarZoom);
+
+function escalaAtual() {
+  const m = board.style.transform.match(/scale\(([^)]+)\)/);
+  return m ? Number(m[1]) : 1;
+}
+
+/* =========================================================
+   ADMIN
+   ========================================================= */
+
+btnAdmin.addEventListener("click", function() {
+  const senha = prompt("Digite a senha do administrador:");
+
+  if (senha === "ndit") {
+    adminAtivo = true;
+    document.body.classList.add("admin-mode");
+    painel.style.display = "block";
+    btnSair.style.display = "inline-block";
+    btnReset.style.display = "inline-block";
+    alert("Modo administrador ativado. Clique em uma caixa para editar.");
+    renderizar();
+  } else if (senha !== null) {
+    alert("Senha incorreta.");
+  }
+});
+
+btnSair.addEventListener("click", function() {
+  adminAtivo = false;
+  selecionado = null;
+  document.body.classList.remove("admin-mode");
+  painel.style.display = "none";
+  btnSair.style.display = "none";
+  btnReset.style.display = "none";
+  renderizar();
+});
+
+btnReset.addEventListener("click", function() {
+  if (!adminAtivo) return;
+
+  const ok = confirm("Tem certeza que deseja restaurar o layout padrão? Depois clique em Salvar alterações.");
+  if (!ok) return;
+
+  layoutPadrao();
+  selecionado = null;
+  marcarAlterado();
+  renderizar();
+});
+
+function selecionar(id) {
+  selecionado = id;
+  const o = objetos[id];
+
+  campos.texto.value = o.texto || "";
+  campos.bg.value = paraHex(o.bg || "#ffffff");
+  campos.color.value = paraHex(o.color || "#111111");
+  campos.fontSize.value = o.fontSize || 18;
+  campos.weight.value = o.weight || "bold";
+  campos.font.value = o.font || "Arial";
+  campos.x.value = o.x || 0;
+  campos.y.value = o.y || 0;
+  campos.w.value = o.w || 50;
+  campos.h.value = o.h || 30;
+  campos.rot.value = o.rot || 0;
+  campos.border.value = o.border ?? 2;
+  campos.z.value = o.z || 1;
+  campos.tipo.value = o.tipo || "box";
+
+  renderizar();
+}
+
+Object.values(campos).forEach(campo => {
+  campo.addEventListener("input", atualizarSelecionado);
+  campo.addEventListener("change", atualizarSelecionado);
+});
+
+function atualizarSelecionado() {
+  if (!selecionado) return;
+
+  const o = objetos[selecionado];
+
+  o.texto = campos.texto.value;
+  o.bg = campos.bg.value;
+  o.color = campos.color.value;
+  o.fontSize = Number(campos.fontSize.value || 18);
+  o.weight = campos.weight.value;
+  o.font = campos.font.value;
+  o.x = Number(campos.x.value || 0);
+  o.y = Number(campos.y.value || 0);
+  o.w = Number(campos.w.value || 20);
+  o.h = Number(campos.h.value || 20);
+  o.rot = Number(campos.rot.value || 0);
+  o.border = Number(campos.border.value ?? 2);
+  o.z = Number(campos.z.value || 1);
+  o.tipo = campos.tipo.value;
+
+  marcarAlterado();
+  renderizar();
+}
+
+function marcarAlterado() {
+  alterado = true;
+  btnSalvar.style.display = "inline-block";
+}
+
+/* =========================================================
+   MOVER
+   ========================================================= */
+
+function pontoEvento(e) {
+  if (e.touches && e.touches.length) {
+    return {
+      x: e.touches[0].clientX,
+      y: e.touches[0].clientY
+    };
+  }
+
+  return {
+    x: e.clientX,
+    y: e.clientY
+  };
+}
+
+function iniciarDrag(e) {
+  if (!adminAtivo) return;
+  if (e.target.classList.contains("resize-dot")) return;
+
+  e.preventDefault();
+
+  const id = e.currentTarget.dataset.id;
+  selecionar(id);
+
+  const p = pontoEvento(e);
+  const o = objetos[id];
+
+  drag = {
+    id,
+    inicioX: p.x,
+    inicioY: p.y,
+    objX: o.x,
+    objY: o.y
+  };
+
+  document.addEventListener("mousemove", moverDrag);
+  document.addEventListener("mouseup", pararDrag);
+  document.addEventListener("touchmove", moverDrag, { passive: false });
+  document.addEventListener("touchend", pararDrag);
+}
+
+function moverDrag(e) {
+  if (!drag) return;
+
+  e.preventDefault();
+
+  const p = pontoEvento(e);
+  const escala = escalaAtual();
+
+  const dx = (p.x - drag.inicioX) / escala;
+  const dy = (p.y - drag.inicioY) / escala;
+
+  const o = objetos[drag.id];
+  o.x = Math.round(drag.objX + dx);
+  o.y = Math.round(drag.objY + dy);
+
+  if (selecionado === drag.id) {
+    campos.x.value = o.x;
+    campos.y.value = o.y;
+  }
+
+  marcarAlterado();
+  renderizar();
+}
+
+function pararDrag() {
+  drag = null;
+  document.removeEventListener("mousemove", moverDrag);
+  document.removeEventListener("mouseup", pararDrag);
+  document.removeEventListener("touchmove", moverDrag);
+  document.removeEventListener("touchend", pararDrag);
+}
+
+/* =========================================================
+   REDIMENSIONAR
+   ========================================================= */
+
+function iniciarResize(e) {
+  if (!adminAtivo || !selecionado) return;
+
+  e.preventDefault();
+  e.stopPropagation();
+
+  const p = pontoEvento(e);
+  const o = objetos[selecionado];
+
+  resize = {
+    id: selecionado,
+    inicioX: p.x,
+    inicioY: p.y,
+    w: o.w,
+    h: o.h
+  };
+
+  document.addEventListener("mousemove", moverResize);
+  document.addEventListener("mouseup", pararResize);
+  document.addEventListener("touchmove", moverResize, { passive: false });
+  document.addEventListener("touchend", pararResize);
+}
+
+function moverResize(e) {
+  if (!resize) return;
+
+  e.preventDefault();
+
+  const p = pontoEvento(e);
+  const escala = escalaAtual();
+
+  const dx = (p.x - resize.inicioX) / escala;
+  const dy = (p.y - resize.inicioY) / escala;
+
+  const o = objetos[resize.id];
+
+  o.w = Math.max(20, Math.round(resize.w + dx));
+  o.h = Math.max(20, Math.round(resize.h + dy));
+
+  campos.w.value = o.w;
+  campos.h.value = o.h;
+
+  marcarAlterado();
+  renderizar();
+}
+
+function pararResize() {
+  resize = null;
+  document.removeEventListener("mousemove", moverResize);
+  document.removeEventListener("mouseup", pararResize);
+  document.removeEventListener("touchmove", moverResize);
+  document.removeEventListener("touchend", pararResize);
+}
+
+/* =========================================================
+   SALVAR E CARREGAR FIREBASE
+   ========================================================= */
+
+btnSalvar.addEventListener("click", async function() {
+  if (!adminAtivo) {
+    alert("Entre no modo admin para salvar.");
+    return;
+  }
+
+  try {
+    travarFirebase = true;
+
+    await refObjetos.set(objetos);
+
+    alterado = false;
+    btnSalvar.style.display = "none";
+
+    alert("Alterações salvas no Firebase com sucesso.");
+
+    setTimeout(() => {
+      travarFirebase = false;
+    }, 1200);
+  } catch (erro) {
+    console.error(erro);
+    travarFirebase = false;
+    alert("Erro ao salvar no Firebase. Verifique as regras do Realtime Database e o console do navegador.");
+  }
+});
+
+refObjetos.on("value", function(snapshot) {
+  if (travarFirebase || alterado) return;
+
+  const dados = snapshot.val();
+
+  if (dados) {
+    objetos = dados;
+  } else {
+    layoutPadrao();
+    refObjetos.set(objetos);
+  }
+
+  renderizar();
+});
+
+
+/* =========================================================
+   BOTÃO PDF
+   ========================================================= */
+
+btnPDF.addEventListener("click", async function() {
+  try {
+    const escalaAnterior = board.style.transform;
+    const margemAnterior = board.style.margin;
+    const selecionadoAnterior = selecionado;
+
+    selecionado = null;
+    renderizar();
+
+    board.style.transform = "scale(1)";
+    board.style.margin = "0";
+    document.body.classList.remove("admin-mode");
+
+    await new Promise(resolve => setTimeout(resolve, 300));
+
+    const canvasPDF = await html2canvas(board, {
+      scale: 2,
+      backgroundColor: "#ffffff",
+      useCORS: true
+    });
+
+    const imgData = canvasPDF.toDataURL("image/png");
+
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({
+      orientation: "landscape",
+      unit: "px",
+      format: [1600, 1030]
+    });
+
+    pdf.addImage(imgData, "PNG", 0, 0, 1600, 1030);
+    pdf.save("copom-ramais.pdf");
+
+    if (adminAtivo) {
+      document.body.classList.add("admin-mode");
+    }
+
+    selecionado = selecionadoAnterior;
+    board.style.transform = escalaAnterior;
+    board.style.margin = margemAnterior;
+    renderizar();
+
+  } catch (erro) {
+    console.error(erro);
+    alert("Não foi possível gerar o PDF. Verifique o console do navegador.");
+    renderizar();
+  }
+});
+
+/* =========================================================
+   MOVER COM SETAS DO TECLADO
+   ========================================================= */
+
+document.addEventListener("keydown", function(e) {
+  if (!adminAtivo || !selecionado) return;
+
+  const tag = document.activeElement.tagName.toLowerCase();
+  const editandoCampo = tag === "input" || tag === "textarea" || tag === "select";
+
+  if (editandoCampo) return;
+
+  const teclas = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
+  if (!teclas.includes(e.key)) return;
+
+  e.preventDefault();
+
+  const passo = e.shiftKey ? 10 : 1;
+  const o = objetos[selecionado];
+
+  if (e.key === "ArrowUp") o.y -= passo;
+  if (e.key === "ArrowDown") o.y += passo;
+  if (e.key === "ArrowLeft") o.x -= passo;
+  if (e.key === "ArrowRight") o.x += passo;
+
+  campos.x.value = o.x;
+  campos.y.value = o.y;
+
+  marcarAlterado();
+  renderizar();
+});
+
+/* =========================================================
+   PAINEL FLUTUANTE / ARRASTÁVEL
+   ========================================================= */
+
+let painelDrag = null;
+
+painel.querySelector("h2").addEventListener("mousedown", iniciarPainelDrag);
+painel.querySelector("h2").addEventListener("touchstart", iniciarPainelDrag, { passive: false });
+
+function iniciarPainelDrag(e) {
+  if (!adminAtivo) return;
+
+  e.preventDefault();
+
+  const p = pontoEvento(e);
+  const rect = painel.getBoundingClientRect();
+
+  painelDrag = {
+    inicioX: p.x,
+    inicioY: p.y,
+    left: rect.left,
+    top: rect.top
+  };
+
+  document.addEventListener("mousemove", moverPainel);
+  document.addEventListener("mouseup", pararPainel);
+  document.addEventListener("touchmove", moverPainel, { passive: false });
+  document.addEventListener("touchend", pararPainel);
+}
+
+function moverPainel(e) {
+  if (!painelDrag) return;
+
+  e.preventDefault();
+
+  const p = pontoEvento(e);
+  const dx = p.x - painelDrag.inicioX;
+  const dy = p.y - painelDrag.inicioY;
+
+  let novoLeft = painelDrag.left + dx;
+  let novoTop = painelDrag.top + dy;
+
+  novoLeft = Math.max(0, Math.min(window.innerWidth - 80, novoLeft));
+  novoTop = Math.max(0, Math.min(window.innerHeight - 60, novoTop));
+
+  painel.style.left = novoLeft + "px";
+  painel.style.top = novoTop + "px";
+  painel.style.right = "auto";
+}
+
+function pararPainel() {
+  painelDrag = null;
+  document.removeEventListener("mousemove", moverPainel);
+  document.removeEventListener("mouseup", pararPainel);
+  document.removeEventListener("touchmove", moverPainel);
+  document.removeEventListener("touchend", pararPainel);
+}
+
+
+/* =========================================================
+   CLIQUE FORA
+   ========================================================= */
+
+document.addEventListener("click", function(e) {
+  if (!adminAtivo) return;
+
+  if (!e.target.closest(".box") && !e.target.closest("#painel") && !e.target.closest("#toolbar")) {
+    selecionado = null;
+    renderizar();
+  }
+});
+
+/* =========================================================
+   AJUDANTES
+   ========================================================= */
+
+function paraHex(cor) {
+  if (!cor) return "#ffffff";
+  if (cor.startsWith("#")) return cor;
+  if (cor === "transparent") return "#ffffff";
+
+  const temp = document.createElement("div");
+  temp.style.color = cor;
+  document.body.appendChild(temp);
+
+  const rgb = getComputedStyle(temp).color;
+  document.body.removeChild(temp);
+
+  const nums = rgb.match(/\d+/g);
+  if (!nums) return "#ffffff";
+
+  return "#" + nums.slice(0, 3).map(n => {
+    const h = Number(n).toString(16);
+    return h.length === 1 ? "0" + h : h;
+  }).join("");
+}
+
+/* =========================================================
+   INICIALIZAÇÃO DE SEGURANÇA
+   ========================================================= */
+
+layoutPadrao();
+renderizar();
+
+</script>
 </body>
 </html>
