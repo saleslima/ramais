@@ -629,9 +629,17 @@
       appId: "1:277968674616:web:4b7a4b4d2240434dedebcd"
     };
 
-    firebase.initializeApp(firebaseConfig);
-    const firebaseDb = firebase.database();
-    const copomRef = firebaseDb.ref('copom/paginaAtual');
+    let firebaseDb = null;
+    let copomRef = null;
+
+    try {
+      firebase.initializeApp(firebaseConfig);
+      firebaseDb = firebase.database();
+      copomRef = firebaseDb.ref('copom/paginaAtual');
+    } catch (error) {
+      console.error('Erro ao iniciar Firebase:', error);
+      alert('Firebase não iniciou. Verifique se os scripts do Firebase estão carregando corretamente.');
+    }
 
     let data = deepClone(defaultData);
     let firebaseLoaded = false;
@@ -654,16 +662,30 @@
       }
     }
 
-    function saveData() {
+    async function saveData() {
       localStorage.setItem('copomData', JSON.stringify(data));
-      return copomRef.set(data);
+
+      if (!copomRef) {
+        throw new Error('Firebase não está conectado. Verifique os scripts, a databaseURL e se o Realtime Database foi criado.');
+      }
+
+      await copomRef.set({
+        ...data,
+        atualizadoEm: new Date().toISOString()
+      });
     }
 
     function startFirebaseRealtime() {
+      if (!copomRef) {
+        console.warn('Firebase não conectado. A página funcionará somente localmente.');
+        return;
+      }
+
       copomRef.on('value', snapshot => {
         const firebaseData = snapshot.val();
 
         if (firebaseData) {
+          delete firebaseData.atualizadoEm;
           data = firebaseData;
           localStorage.setItem('copomData', JSON.stringify(data));
           renderAll();
@@ -1042,8 +1064,9 @@
       console.assert(typeof convertRotatedTextsToImagesForPdf === 'function', 'Função de PDF ausente');
       console.assert(document.getElementById('generatePdf'), 'Botão PDF ausente');
       console.assert(document.getElementById('openSettings'), 'Botão configuração ausente');
-      console.assert(firebaseDb, 'Firebase Database não iniciou');
-      console.assert(copomRef, 'Referência do Firebase ausente');
+      console.assert(document.getElementById('saveConfig'), 'Botão salvar ausente');
+      console.assert(typeof saveData === 'function', 'Função saveData ausente');
+      if (!firebaseDb || !copomRef) console.warn('Firebase ainda não iniciou. Verifique scripts e configuração.');
     }
 
     document.getElementById('generatePdf').onclick = generatePdf;
@@ -1067,24 +1090,42 @@
       input.oninput = () => root.style.setProperty(input.dataset.var, input.value);
     });
 
-    document.getElementById('saveConfig').onclick = () => {
-      document.querySelectorAll('input[type="color"][data-var]').forEach(input => {
-        data.colors[input.dataset.var] = input.value;
-      });
-      data.title = document.getElementById('titleInput').value || defaultData.title;
-      const field = fieldsCache[Number(document.getElementById('fieldSelect').value || 0)];
-      if (field) {
-        setFieldObj(field, document.getElementById('fieldLabel').value, document.getElementById('fieldNum').value, document.getElementById('fieldColor').value);
-      }
-      saveData()
-        .then(() => {
-          renderAll();
-          alert('Alterações salvas no Firebase com sucesso. Todos que estiverem com a página aberta serão atualizados automaticamente.');
-        })
-        .catch(error => {
-          console.error(error);
-          alert('Erro ao salvar no Firebase. Verifique se o Realtime Database foi criado e se as regras permitem escrita.');
+    document.getElementById('saveConfig').onclick = async () => {
+      const saveBtn = document.getElementById('saveConfig');
+      const originalText = saveBtn.textContent;
+
+      try {
+        saveBtn.disabled = true;
+        saveBtn.textContent = 'Salvando...';
+
+        document.querySelectorAll('input[type="color"][data-var]').forEach(input => {
+          data.colors[input.dataset.var] = input.value;
         });
+
+        data.title = document.getElementById('titleInput').value || defaultData.title;
+
+        const field = fieldsCache[Number(document.getElementById('fieldSelect').value || 0)];
+        if (field) {
+          setFieldObj(
+            field,
+            document.getElementById('fieldLabel').value,
+            document.getElementById('fieldNum').value,
+            document.getElementById('fieldColor').value
+          );
+        }
+
+        await saveData();
+        renderAll();
+        alert('Alterações salvas no Firebase com sucesso. Todos que estiverem com a página aberta serão atualizados automaticamente.');
+      } catch (error) {
+        console.error('Erro ao salvar:', error);
+        alert('Erro ao salvar no Firebase: ' + error.message + '
+
+Confira se o Realtime Database foi criado e se as regras permitem escrita.');
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.textContent = originalText;
+      }
     };
 
     document.getElementById('downloadHtml').onclick = () => {
