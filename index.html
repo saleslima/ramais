@@ -453,6 +453,8 @@
       .form-grid { grid-template-columns: 1fr; }
     }
   </style>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
@@ -617,7 +619,22 @@
       ]
     };
 
-    let data = loadData();
+    const firebaseConfig = {
+      apiKey: "AIzaSyCm7rf4Iep82wkEsxZYYCHvS2oD4dvm5aI",
+      authDomain: "ramal-70e25.firebaseapp.com",
+      databaseURL: "https://ramal-70e25-default-rtdb.firebaseio.com",
+      projectId: "ramal-70e25",
+      storageBucket: "ramal-70e25.firebasestorage.app",
+      messagingSenderId: "277968674616",
+      appId: "1:277968674616:web:4b7a4b4d2240434dedebcd"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const firebaseDb = firebase.database();
+    const copomRef = firebaseDb.ref('copom/paginaAtual');
+
+    let data = deepClone(defaultData);
+    let firebaseLoaded = false;
     const root = document.documentElement;
     const backdrop = document.getElementById('modalBackdrop');
     let fieldsCache = [];
@@ -639,6 +656,29 @@
 
     function saveData() {
       localStorage.setItem('copomData', JSON.stringify(data));
+      return copomRef.set(data);
+    }
+
+    function startFirebaseRealtime() {
+      copomRef.on('value', snapshot => {
+        const firebaseData = snapshot.val();
+
+        if (firebaseData) {
+          data = firebaseData;
+          localStorage.setItem('copomData', JSON.stringify(data));
+          renderAll();
+          firebaseLoaded = true;
+          return;
+        }
+
+        if (!firebaseLoaded) {
+          copomRef.set(data);
+          firebaseLoaded = true;
+        }
+      }, error => {
+        console.error('Erro ao ler Firebase:', error);
+        alert('Não foi possível conectar ao Realtime Database. Verifique se o banco foi criado e se as regras permitem leitura/escrita.');
+      });
     }
 
     function getCurrentHtmlWithEmbeddedData() {
@@ -978,9 +1018,15 @@
         if (novoNumero === null) { closeQuickEdit(); return; }
 
         setFieldObj(quickEditTarget, novoLabel, novoNumero, current[2] || 'blue');
-        saveData();
-        renderAll();
-        closeQuickEdit();
+        saveData()
+          .then(() => {
+            renderAll();
+            closeQuickEdit();
+          })
+          .catch(error => {
+            console.error(error);
+            alert('Erro ao salvar no Firebase. Verifique se o Realtime Database foi criado e se as regras permitem escrita.');
+          });
       };
     }
 
@@ -996,8 +1042,8 @@
       console.assert(typeof convertRotatedTextsToImagesForPdf === 'function', 'Função de PDF ausente');
       console.assert(document.getElementById('generatePdf'), 'Botão PDF ausente');
       console.assert(document.getElementById('openSettings'), 'Botão configuração ausente');
-      console.assert(document.getElementById('downloadHtml'), 'Botão baixar HTML ausente');
-      console.assert(getCurrentHtmlWithEmbeddedData().includes('const defaultData ='), 'HTML atualizado não contém defaultData');
+      console.assert(firebaseDb, 'Firebase Database não iniciou');
+      console.assert(copomRef, 'Referência do Firebase ausente');
     }
 
     document.getElementById('generatePdf').onclick = generatePdf;
@@ -1030,10 +1076,15 @@
       if (field) {
         setFieldObj(field, document.getElementById('fieldLabel').value, document.getElementById('fieldNum').value, document.getElementById('fieldColor').value);
       }
-      saveData();
-      renderAll();
-      downloadUpdatedHtml();
-      alert('Alterações salvas com sucesso. Também baixei um novo arquivo HTML com a alteração gravada no próprio código. Use esse arquivo atualizado para todos acessarem a versão nova.');
+      saveData()
+        .then(() => {
+          renderAll();
+          alert('Alterações salvas no Firebase com sucesso. Todos que estiverem com a página aberta serão atualizados automaticamente.');
+        })
+        .catch(error => {
+          console.error(error);
+          alert('Erro ao salvar no Firebase. Verifique se o Realtime Database foi criado e se as regras permitem escrita.');
+        });
     };
 
     document.getElementById('downloadHtml').onclick = () => {
@@ -1061,6 +1112,7 @@
     });
 
     renderAll();
+    startFirebaseRealtime();
     runSelfTests();
   </script>
 </body>
