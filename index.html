@@ -99,9 +99,39 @@
         alert('Nova configuração salva no Firebase. Todos que acessarem a página verão essa configuração.');
       }catch(e){alert('Erro ao salvar: '+e.message);}finally{btn.disabled=false;btn.textContent=old;}
     }
-    function requireMoveLogin(){backdrop.classList.add('show');document.getElementById('loginArea').classList.remove('hidden');document.getElementById('configArea').classList.add('hidden');document.getElementById('loginError').style.display='none';document.getElementById('loginUser').value='';document.getElementById('loginPass').value='';document.getElementById('doLogin').onclick=()=>{const u=document.getElementById('loginUser').value.trim(),p=document.getElementById('loginPass').value.trim();if(u==='admin'&&p==='ndit'){freezeLayoutPositions();moveModeEnabled=true;document.body.classList.add('move-enabled');backdrop.classList.remove('show');renderAll();markChanged();alert('Movimentação habilitada. Todos os blocos foram fixados na posição e tamanho atuais. Agora somente o objeto arrastado será movido.');document.getElementById('doLogin').onclick=normalLogin;}else document.getElementById('loginError').style.display='block';};}
-    function getCompleteObject(field){const obj=deepClone(getFieldObj(field));const style=deepClone(styleOf(field.key));return{label:obj[0]||'',num:obj[1]||'',color:style.bgClass||obj[2]||'blue',style:style};}
-    function putCompleteObject(field,obj){setFieldObj(field,obj.label,obj.num,obj.color,obj.style||{});}
+    function requireMoveLogin(){
+      backdrop.classList.add('show');
+      document.getElementById('loginArea').classList.remove('hidden');
+      document.getElementById('configArea').classList.add('hidden');
+      document.getElementById('loginError').style.display='none';
+      document.getElementById('loginUser').value='';
+      document.getElementById('loginPass').value='';
+
+      const entrar=document.getElementById('doLogin');
+      entrar.onclick=function(ev){
+        if(ev)ev.preventDefault();
+        const u=document.getElementById('loginUser').value.trim();
+        const p=document.getElementById('loginPass').value.trim();
+
+        if(u==='admin'&&p==='ndit'){
+          try{
+            if(typeof freezeLayoutPositions==='function')freezeLayoutPositions();
+          }catch(error){
+            console.warn('Não foi possível fixar layout antes de mover:',error);
+          }
+          moveModeEnabled=true;
+          document.body.classList.add('move-enabled');
+          backdrop.classList.remove('show');
+          renderAll();
+          markChanged();
+          alert('Movimentação habilitada. Agora você pode mover objetos e textos.');
+          entrar.onclick=normalLogin;
+          return;
+        }
+
+        document.getElementById('loginError').style.display='block';
+      };
+    }
     function swapFields(k1,k2){const f1=fieldByKey(k1),f2=fieldByKey(k2);if(!f1||!f2||f1.type!==f2.type)return false;const o1=getCompleteObject(f1),o2=getCompleteObject(f2);putCompleteObject(f1,o2);putCompleteObject(f2,o1);return true;}
     function snapPosition(key,x,y,w,h){const limit=14;Object.keys(data.fieldStyles||{}).forEach(otherKey=>{if(otherKey===key)return;const s=data.fieldStyles[otherKey]||{};if(!Number.isFinite(Number(s.x))||!Number.isFinite(Number(s.y))||!Number.isFinite(Number(s.width))||!Number.isFinite(Number(s.height)))return;const ox=Number(s.x),oy=Number(s.y),ow=Number(s.width),oh=Number(s.height);const verticalOverlap=y<oy+oh&&y+h>oy;const horizontalOverlap=x<ox+ow&&x+w>ox;if(verticalOverlap){if(Math.abs((x+w)-ox)<=limit)x=ox-w;if(Math.abs(x-(ox+ow))<=limit)x=ox+ow;}if(horizontalOverlap){if(Math.abs((y+h)-oy)<=limit)y=oy-h;if(Math.abs(y-(oy+oh))<=limit)y=oy+oh;}});return{x:Math.round(x),y:Math.round(y)};}
     function setFreePosition(key,clientX,clientY){
