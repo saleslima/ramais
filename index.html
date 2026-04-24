@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>COPOM - Centro de Operações da Polícia Militar</title>
+
   <style>
     :root {
       --verde: #9fd285;
@@ -453,6 +454,7 @@
       .form-grid { grid-template-columns: 1fr; }
     }
   </style>
+
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -509,7 +511,7 @@
 
       <div id="configArea" class="hidden">
         <h2>Configurar página</h2>
-        <p class="hint">Altere cores gerais, título e o texto/cor de qualquer campo. As alterações ficam salvas no navegador.</p>
+        <p class="hint">Altere cores gerais, título e o texto/cor de qualquer campo. As alterações serão salvas no Firebase Realtime Database.</p>
 
         <h3>Cores principais</h3>
         <div class="form-grid">
@@ -620,29 +622,21 @@
     };
 
     const firebaseConfig = {
-      apiKey: "AIzaSyCm7rf4Iep82wkEsxZYYCHvS2oD4dvm5aI",
-      authDomain: "ramal-70e25.firebaseapp.com",
-      databaseURL: "https://ramal-70e25-default-rtdb.firebaseio.com",
-      projectId: "ramal-70e25",
-      storageBucket: "ramal-70e25.firebasestorage.app",
-      messagingSenderId: "277968674616",
-      appId: "1:277968674616:web:4b7a4b4d2240434dedebcd"
+      apiKey: 'AIzaSyCm7rf4Iep82wkEsxZYYCHvS2oD4dvm5aI',
+      authDomain: 'ramal-70e25.firebaseapp.com',
+      databaseURL: 'https://ramal-70e25-default-rtdb.firebaseio.com',
+      projectId: 'ramal-70e25',
+      storageBucket: 'ramal-70e25.firebasestorage.app',
+      messagingSenderId: '277968674616',
+      appId: '1:277968674616:web:4b7a4b4d2240434dedebcd'
     };
 
     let firebaseDb = null;
     let copomRef = null;
-
-    try {
-      firebase.initializeApp(firebaseConfig);
-      firebaseDb = firebase.database();
-      copomRef = firebaseDb.ref('copom/paginaAtual');
-    } catch (error) {
-      console.error('Erro ao iniciar Firebase:', error);
-      alert('Firebase não iniciou. Verifique se os scripts do Firebase estão carregando corretamente.');
-    }
-
     let data = deepClone(defaultData);
     let firebaseLoaded = false;
+    let applyingRemoteUpdate = false;
+
     const root = document.documentElement;
     const backdrop = document.getElementById('modalBackdrop');
     let fieldsCache = [];
@@ -652,23 +646,33 @@
       return JSON.parse(JSON.stringify(obj));
     }
 
-    function loadData() {
+    function initializeFirebaseSafe() {
+      try {
+        if (!window.firebase) throw new Error('Biblioteca Firebase não carregou.');
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        firebaseDb = firebase.database();
+        copomRef = firebaseDb.ref('copom/paginaAtual');
+      } catch (error) {
+        console.error('Erro ao iniciar Firebase:', error);
+        alert('Firebase não iniciou: ' + error.message);
+      }
+    }
+
+    function loadLocalData() {
       try {
         const saved = localStorage.getItem('copomData');
         return saved ? JSON.parse(saved) : deepClone(defaultData);
       } catch (error) {
-        console.warn('Dados salvos inválidos. Restaurando padrão.', error);
+        console.warn('Dados locais inválidos. Restaurando padrão.', error);
         return deepClone(defaultData);
       }
     }
 
     async function saveData() {
       localStorage.setItem('copomData', JSON.stringify(data));
-
       if (!copomRef) {
-        throw new Error('Firebase não está conectado. Verifique os scripts, a databaseURL e se o Realtime Database foi criado.');
+        throw new Error('Firebase não está conectado. Confira os scripts, a databaseURL e se o Realtime Database foi criado.');
       }
-
       await copomRef.set({
         ...data,
         atualizadoEm: new Date().toISOString()
@@ -685,16 +689,19 @@
         const firebaseData = snapshot.val();
 
         if (firebaseData) {
-          delete firebaseData.atualizadoEm;
-          data = firebaseData;
+          const cleanData = deepClone(firebaseData);
+          delete cleanData.atualizadoEm;
+          data = cleanData;
           localStorage.setItem('copomData', JSON.stringify(data));
+          applyingRemoteUpdate = true;
           renderAll();
+          applyingRemoteUpdate = false;
           firebaseLoaded = true;
           return;
         }
 
         if (!firebaseLoaded) {
-          copomRef.set(data);
+          copomRef.set(data).catch(error => console.error('Erro ao criar dados iniciais no Firebase:', error));
           firebaseLoaded = true;
         }
       }, error => {
@@ -705,8 +712,8 @@
 
     function getCurrentHtmlWithEmbeddedData() {
       const htmlAtual = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
-      const novoDefaultData = 'const defaultData = ' + JSON.stringify(data, null, 6) + ';\n\n    let data = loadData';
-      const regexDefaultData = new RegExp('const defaultData = [\s\S]*?;\n\n    let data = loadData');
+      const novoDefaultData = 'const defaultData = ' + JSON.stringify(data, null, 6) + ';\n\n    const firebaseConfig =';
+      const regexDefaultData = /const defaultData = [\s\S]*?;\n\n    const firebaseConfig =/;
       return htmlAtual.replace(regexDefaultData, novoDefaultData);
     }
 
@@ -760,7 +767,7 @@
       const grid = document.getElementById('dispatchGrid');
       grid.innerHTML = data.dispatch.map(col => `
         <div class="dispatch-col">
-          ${col.map(line => `<div class="line grid-${line.length}">${line.map(([label,num,color]) => boxHTML(label,num,color)).join('')}</div>`).join('')}
+          ${col.map(line => `<div class="line grid-${line.length}">${line.map(([label, num, color]) => boxHTML(label, num, color)).join('')}</div>`).join('')}
         </div>
       `).join('');
     }
@@ -770,7 +777,7 @@
       grid.innerHTML = data.emergency.map(group => `
         <div class="phone-group">
           <div class="phone-title-row" style="grid-template-columns: repeat(${group.tops.length}, 1fr)">
-            ${group.tops.map((n,i) => boxHTML('', n, i === 0 && group.tops[0] === '3160' ? 'blue-dark' : 'blue', 'small')).join('')}
+            ${group.tops.map((n, i) => boxHTML('', n, i === 0 && group.tops[0] === '3160' ? 'blue-dark' : 'blue', 'small')).join('')}
           </div>
           ${group.rows.map(row => `
             <div class="phone-table">
@@ -909,10 +916,7 @@
       let restoreRotatedTexts = null;
 
       try {
-        if (!window.html2canvas || !window.jspdf) {
-          throw new Error('Bibliotecas de PDF não carregadas. Verifique a internet.');
-        }
-
+        if (!window.html2canvas || !window.jspdf) throw new Error('Bibliotecas de PDF não carregadas. Verifique a internet.');
         btn.textContent = 'Gerando...';
         btn.disabled = true;
         page.classList.add('pdf-export');
@@ -1008,14 +1012,12 @@
           }
         }
       }
-
       return null;
     }
 
     function openQuickEdit(target) {
       quickEditTarget = target;
       const current = getFieldObj(target);
-
       backdrop.classList.add('show');
       document.getElementById('loginArea').classList.remove('hidden');
       document.getElementById('configArea').classList.add('hidden');
@@ -1027,7 +1029,6 @@
       document.getElementById('doLogin').onclick = () => {
         const user = document.getElementById('loginUser').value.trim();
         const pass = document.getElementById('loginPass').value.trim();
-
         if (user !== 'admin' || pass !== 'ndit') {
           document.getElementById('loginError').style.display = 'block';
           return;
@@ -1035,7 +1036,6 @@
 
         const novoLabel = prompt('Editar texto superior/título:', current[0] || '');
         if (novoLabel === null) { closeQuickEdit(); return; }
-
         const novoNumero = prompt('Editar número/texto inferior:', current[1] || '');
         if (novoNumero === null) { closeQuickEdit(); return; }
 
@@ -1047,7 +1047,7 @@
           })
           .catch(error => {
             console.error(error);
-            alert('Erro ao salvar no Firebase. Verifique se o Realtime Database foi criado e se as regras permitem escrita.');
+            alert('Erro ao salvar no Firebase: ' + error.message);
           });
       };
     }
@@ -1066,10 +1066,13 @@
       console.assert(document.getElementById('openSettings'), 'Botão configuração ausente');
       console.assert(document.getElementById('saveConfig'), 'Botão salvar ausente');
       console.assert(typeof saveData === 'function', 'Função saveData ausente');
+      console.assert('Linha 1\nLinha 2'.split('\n').length === 2, 'Teste extra de split \\n falhou');
+      console.assert(typeof getCurrentHtmlWithEmbeddedData === 'function', 'Função baixar HTML ausente');
       if (!firebaseDb || !copomRef) console.warn('Firebase ainda não iniciou. Verifique scripts e configuração.');
     }
 
     document.getElementById('generatePdf').onclick = generatePdf;
+
     document.getElementById('openSettings').onclick = () => {
       backdrop.classList.add('show');
       document.getElementById('loginArea').classList.remove('hidden');
@@ -1103,8 +1106,8 @@
         });
 
         data.title = document.getElementById('titleInput').value || defaultData.title;
-
         const field = fieldsCache[Number(document.getElementById('fieldSelect').value || 0)];
+
         if (field) {
           setFieldObj(
             field,
@@ -1119,9 +1122,7 @@
         alert('Alterações salvas no Firebase com sucesso. Todos que estiverem com a página aberta serão atualizados automaticamente.');
       } catch (error) {
         console.error('Erro ao salvar:', error);
-        alert('Erro ao salvar no Firebase: ' + error.message + '
-
-Confira se o Realtime Database foi criado e se as regras permitem escrita.');
+        alert('Erro ao salvar no Firebase: ' + error.message + '\n\nConfira se o Realtime Database foi criado e se as regras permitem escrita.');
       } finally {
         saveBtn.disabled = false;
         saveBtn.textContent = originalText;
@@ -1136,22 +1137,32 @@ Confira se o Realtime Database foi criado e se as regras permitem escrita.');
       if (!confirm('Deseja restaurar a página original?')) return;
       localStorage.removeItem('copomData');
       data = deepClone(defaultData);
-      renderAll();
-      document.getElementById('titleInput').value = data.title;
-      alert('Página restaurada.');
+      saveData()
+        .then(() => {
+          renderAll();
+          document.getElementById('titleInput').value = data.title;
+          alert('Página restaurada e salva no Firebase.');
+        })
+        .catch(error => {
+          console.error(error);
+          renderAll();
+          alert('Página restaurada localmente, mas não salvou no Firebase: ' + error.message);
+        });
     };
 
-    backdrop.addEventListener('click', (event) => {
+    backdrop.addEventListener('click', event => {
       if (event.target === backdrop) backdrop.classList.remove('show');
     });
 
-    document.addEventListener('dblclick', (event) => {
+    document.addEventListener('dblclick', event => {
       const target = findQuickEditTarget(event.target);
       if (!target) return;
       event.preventDefault();
       openQuickEdit(target);
     });
 
+    data = loadLocalData();
+    initializeFirebaseSafe();
     renderAll();
     startFirebaseRealtime();
     runSelfTests();
