@@ -49,6 +49,7 @@
       transform-origin: top left;
       margin: 0 auto;
       box-shadow: 0 0 18px rgba(0, 0, 0, 0.25);
+      outline: none;
     }
 
     .box {
@@ -451,7 +452,7 @@
   </div>
 
   <div id="app">
-    <div id="board"></div>
+    <div id="board" tabindex="0"></div>
   </div>
 
   <div id="mobileAviso">
@@ -959,6 +960,13 @@ function selecionar(id) {
   campos.z.value = o.z || 1;
   campos.tipo.value = o.tipo || "box";
 
+  // Garante que, ao selecionar com o mouse, as setas do teclado movam o objeto.
+  if (document.activeElement && document.activeElement.blur) {
+    document.activeElement.blur();
+  }
+
+  board.focus({ preventScroll: true });
+
   renderizar();
 }
 
@@ -1147,6 +1155,10 @@ btnSalvar.addEventListener("click", async function() {
 
     alterado = false;
     btnSalvar.style.display = "none";
+
+    // Após salvar, fecha o painel de alterações da tela.
+    selecionado = null;
+    painel.style.display = "none";
 
     alert("Alterações salvas no Firebase com sucesso.");
 
