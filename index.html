@@ -661,11 +661,25 @@
     function loadLocalData() {
       try {
         const saved = localStorage.getItem('copomData');
-        return saved ? JSON.parse(saved) : deepClone(defaultData);
+        return saved ? normalizeData(JSON.parse(saved)) : deepClone(defaultData);
       } catch (error) {
         console.warn('Dados locais inválidos. Restaurando padrão.', error);
         return deepClone(defaultData);
       }
+    }
+
+    function normalizeData(value) {
+      const base = deepClone(defaultData);
+      const incoming = value && typeof value === 'object' ? value : {};
+
+      return {
+        ...base,
+        ...incoming,
+        colors: incoming.colors && typeof incoming.colors === 'object' ? incoming.colors : {},
+        dispatch: Array.isArray(incoming.dispatch) ? incoming.dispatch : base.dispatch,
+        emergency: Array.isArray(incoming.emergency) ? incoming.emergency : base.emergency,
+        admin: Array.isArray(incoming.admin) ? incoming.admin : base.admin
+      };
     }
 
     async function saveData() {
@@ -691,7 +705,7 @@
         if (firebaseData) {
           const cleanData = deepClone(firebaseData);
           delete cleanData.atualizadoEm;
-          data = cleanData;
+          data = normalizeData(cleanData);
           localStorage.setItem('copomData', JSON.stringify(data));
           applyingRemoteUpdate = true;
           renderAll();
@@ -1100,6 +1114,10 @@
       try {
         saveBtn.disabled = true;
         saveBtn.textContent = 'Salvando...';
+
+        if (!data.colors || typeof data.colors !== 'object') {
+          data.colors = {};
+        }
 
         document.querySelectorAll('input[type="color"][data-var]').forEach(input => {
           data.colors[input.dataset.var] = input.value;
